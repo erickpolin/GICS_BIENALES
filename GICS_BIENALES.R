@@ -10,6 +10,12 @@ library(reshape2)
 setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH 2010/ENIGH2010"))
 Deciles_por_fuente_2010<-read.dbf("Nacional por fuente por DECIL estimaciones 2010.dbf")
 
+consumo_2010<-read.dbf("Nacional Consumo  por DECIL 2010.dbf")
+
+consumo_2010<-as.data.frame(consumo_2010)
+
+names(consumo_2010)=c("DECIL","Consumo_2010","SE_2010")
+
 names(Deciles_por_fuente_2010)=c("ING COR2010", "TRABAJO2010", "SUBORDINADO2010", "NEGOCIOS2010","OTROS TRAB2010", "RENTAS2010","UTILIDAD2010", "ARRENDA2010", "TRANSFER2010","JUBILACION2010", "BECAS2010", "DONATIVOS2010", "REMESAS2010", "BENEGOBIERNO2010", "TRANS HOG2010", "TRANS INST2010", "ESTIM ALQU2010", "OTROS INGRESOS2010")
 
 Deciles_por_fuente_2010<-Deciles_por_fuente_2010%>%
@@ -40,6 +46,12 @@ all.equal(Deciles_por_fuente_2010$`ING COR2010`,Deciles_por_fuente_2010$prueba2)
 setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH_2012/ENIGH2012"))
 Deciles_por_fuente_2012<-read.dbf("Nacional por fuente por DECIL estimaciones 2012.dbf")
 
+consumo_2012<-read.dbf("Nacional Consumo  por DECIL 2012.dbf")
+
+consumo_2012<-as.data.frame(consumo_2012)
+
+names(consumo_2012)=c("DECIL","Consumo_2012","SE_2012")
+
 names(Deciles_por_fuente_2012)=c("ING COR2012", "TRABAJO2012", "SUBORDINADO2012", "NEGOCIOS2012","OTROS TRAB2012", "RENTAS2012","UTILIDAD2012", "ARRENDA2012", "TRANSFER2012","JUBILACION2012", "BECAS2012", "DONATIVOS2012", "REMESAS2012", "BENEGOBIERNO2012", "TRANS HOG2012", "TRANS INST2012", "ESTIM ALQU2012", "OTROS INGRESOS2012")
 
 Deciles_por_fuente_2012<-Deciles_por_fuente_2012%>%
@@ -69,6 +81,12 @@ all.equal(Deciles_por_fuente_2012$`ING COR2012`,Deciles_por_fuente_2012$prueba2)
 setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH_2014/ENIGH_2014"))
 Deciles_por_fuente_2014<-read.dbf("Nacional por fuente por DECIL estimaciones 2014.dbf")
 
+consumo_2014<-read.dbf("Nacional Consumo  por DECIL 2014.dbf")
+
+consumo_2014<-as.data.frame(consumo_2014)
+
+names(consumo_2014)=c("DECIL","Consumo_2014","SE_2014")
+
 names(Deciles_por_fuente_2014)=c("ING COR2014", "TRABAJO2014", "SUBORDINADO2014", "NEGOCIOS2014","OTROS TRAB2014", "RENTAS2014","UTILIDAD2014", "ARRENDA2014", "TRANSFER2014","JUBILACION2014", "BECAS2014", "DONATIVOS2014", "REMESAS2014", "BENEGOBIERNO2014", "TRANS HOG2014", "TRANS INST2014", "ESTIM ALQU2014", "OTROS INGRESOS2014")
 
 Deciles_por_fuente_2014<-Deciles_por_fuente_2014%>%
@@ -96,6 +114,13 @@ all.equal(Deciles_por_fuente_2014$`ING COR2014`,Deciles_por_fuente_2014$prueba2)
 setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH_2016/ENIGH_2016"))
 Deciles_por_fuente_2016<-read.dbf("Nacional por fuente por DECIL estimaciones 2016.dbf")
 
+
+consumo_2016<-read.dbf("Nacional Consumo  por DECIL 2016.dbf")
+
+consumo_2016<-as.data.frame(consumo_2016)
+
+names(consumo_2016)=c("DECIL","Consumo_2016","SE_2016")
+
 names(Deciles_por_fuente_2016)=c("ING COR2016", "TRABAJO2016", "SUBORDINADO2016", "NEGOCIOS2016","OTROS TRAB2016", "RENTAS2016","UTILIDAD2016", "ARRENDA2016", "TRANSFER2016","JUBILACION2016", "BECAS2016", "DONATIVOS2016", "REMESAS2016", "BENEGOBIERNO2016", "TRANS HOG2016", "TRANS INST2016", "ESTIM ALQU2016", "OTROS INGRESOS2016")
 
 Deciles_por_fuente_2016<-Deciles_por_fuente_2016%>%
@@ -122,6 +147,12 @@ all.equal(Deciles_por_fuente_2016$`ING COR2016`,Deciles_por_fuente_2016$prueba2)
 
 setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH 2018/ENIGH2018"))
 Deciles_por_fuente_2018<-read.dbf("Nacional por fuente por DECIL estimaciones 2018.dbf")
+
+consumo_2018<-read.dbf("Nacional Consumo  por DECIL 2018.dbf")
+
+consumo_2018<-as.data.frame(consumo_2018)
+
+names(consumo_2018)=c("DECIL","Consumo_2018","SE_2018")
 
 names(Deciles_por_fuente_2018)=c("ING COR2018", "TRABAJO2018", "SUBORDINADO2018", "NEGOCIOS2018","OTROS TRAB2018", "RENTAS2018","UTILIDAD2018", "ARRENDA2018", "TRANSFER2018","JUBILACION2018", "BECAS2018", "DONATIVOS2018", "REMESAS2018", "BENEGOBIERNO2018", "TRANS HOG2018", "TRANS INST2018", "ESTIM ALQU2018", "OTROS INGRESOS2018")
 
@@ -282,7 +313,42 @@ Growth Incidence Curve
 
 GIC
 
+########## Consumo 
 
+GICconsumo<-data.frame(consumo_2010,consumo_2012)
+
+
+
+GICconsumo<-GICconsumo%>%
+  mutate(Rate=((Consumo_2012-Consumo_2010)/Consumo_2010)*100,
+         Deciles=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
+         orden=1:11)
+
+media<-mean(GICTotal$Rate)
+mediana<-median(GICTotal$Rate)
+
+max<-round((max(GICTotal$Rate)+1.5),0)
+min<-round((min(GICTotal$Rate)+1.5),0)
+
+GIC_Nacional<-GICTotal%>%
+  mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
+  ggplot(aes(Deciles,Rate))+
+  geom_col()+
+  labs(title = "Growth Incidence Curve, Mexico, 2010-2018",
+       y="Growth rate (total)",
+       x="Decile")+
+  scale_y_continuous(breaks=seq(min,max,1))+
+  theme_minimal()
+
+GIC_Nacional
+
+GIC_Nacional<-ggplotly(GIC_Nacional)
+
+GIC_Nacional
+
+saveWidget(GIC_Nacional,fil="GIC_Mexico_total.html")
+
+rm(list=ls())
 
 ######### 2012-2014 ##############
 Tasa_total<-((Deciles_por_fuente_2014$`ING COR2014`- Deciles_por_fuente_2012$`ING COR2012`)/Deciles_por_fuente_2012$`ING COR2012`)*100
