@@ -14,7 +14,7 @@ consumo_2010<-read.dbf("Nacional Consumo  por DECIL 2010.dbf")
 
 consumo_2010<-as.data.frame(consumo_2010)
 
-names(consumo_2010)=c("DECIL","Consumo_2010","SE_2010")
+names(consumo_2010)=c("Consumo_2010")
 
 names(Deciles_por_fuente_2010)=c("ING COR2010", "TRABAJO2010", "SUBORDINADO2010", "NEGOCIOS2010","OTROS TRAB2010", "RENTAS2010","UTILIDAD2010", "ARRENDA2010", "TRANSFER2010","JUBILACION2010", "BECAS2010", "DONATIVOS2010", "REMESAS2010", "BENEGOBIERNO2010", "TRANS HOG2010", "TRANS INST2010", "ESTIM ALQU2010", "OTROS INGRESOS2010")
 
@@ -50,7 +50,7 @@ consumo_2012<-read.dbf("Nacional Consumo  por DECIL 2012.dbf")
 
 consumo_2012<-as.data.frame(consumo_2012)
 
-names(consumo_2012)=c("DECIL","Consumo_2012","SE_2012")
+names(consumo_2012)=c("Consumo_2012")
 
 names(Deciles_por_fuente_2012)=c("ING COR2012", "TRABAJO2012", "SUBORDINADO2012", "NEGOCIOS2012","OTROS TRAB2012", "RENTAS2012","UTILIDAD2012", "ARRENDA2012", "TRANSFER2012","JUBILACION2012", "BECAS2012", "DONATIVOS2012", "REMESAS2012", "BENEGOBIERNO2012", "TRANS HOG2012", "TRANS INST2012", "ESTIM ALQU2012", "OTROS INGRESOS2012")
 
@@ -85,7 +85,7 @@ consumo_2014<-read.dbf("Nacional Consumo  por DECIL 2014.dbf")
 
 consumo_2014<-as.data.frame(consumo_2014)
 
-names(consumo_2014)=c("DECIL","Consumo_2014","SE_2014")
+names(consumo_2014)=c("Consumo_2014")
 
 names(Deciles_por_fuente_2014)=c("ING COR2014", "TRABAJO2014", "SUBORDINADO2014", "NEGOCIOS2014","OTROS TRAB2014", "RENTAS2014","UTILIDAD2014", "ARRENDA2014", "TRANSFER2014","JUBILACION2014", "BECAS2014", "DONATIVOS2014", "REMESAS2014", "BENEGOBIERNO2014", "TRANS HOG2014", "TRANS INST2014", "ESTIM ALQU2014", "OTROS INGRESOS2014")
 
@@ -119,7 +119,7 @@ consumo_2016<-read.dbf("Nacional Consumo  por DECIL 2016.dbf")
 
 consumo_2016<-as.data.frame(consumo_2016)
 
-names(consumo_2016)=c("DECIL","Consumo_2016","SE_2016")
+names(consumo_2016)=c("Consumo_2016")
 
 names(Deciles_por_fuente_2016)=c("ING COR2016", "TRABAJO2016", "SUBORDINADO2016", "NEGOCIOS2016","OTROS TRAB2016", "RENTAS2016","UTILIDAD2016", "ARRENDA2016", "TRANSFER2016","JUBILACION2016", "BECAS2016", "DONATIVOS2016", "REMESAS2016", "BENEGOBIERNO2016", "TRANS HOG2016", "TRANS INST2016", "ESTIM ALQU2016", "OTROS INGRESOS2016")
 
@@ -152,7 +152,7 @@ consumo_2018<-read.dbf("Nacional Consumo  por DECIL 2018.dbf")
 
 consumo_2018<-as.data.frame(consumo_2018)
 
-names(consumo_2018)=c("DECIL","Consumo_2018","SE_2018")
+names(consumo_2018)=c("Consumo_2018")
 
 names(Deciles_por_fuente_2018)=c("ING COR2018", "TRABAJO2018", "SUBORDINADO2018", "NEGOCIOS2018","OTROS TRAB2018", "RENTAS2018","UTILIDAD2018", "ARRENDA2018", "TRANSFER2018","JUBILACION2018", "BECAS2018", "DONATIVOS2018", "REMESAS2018", "BENEGOBIERNO2018", "TRANS HOG2018", "TRANS INST2018", "ESTIM ALQU2018", "OTROS INGRESOS2018")
 
@@ -290,7 +290,7 @@ GIC<-cuadro_final%>%
   geom_col()+
   labs(title = "Figure 1
 Mexico
-Growth Incidence Curve
+Growth Incidence Curve by Income
 2010-2012",
        y="Growth rate (total)",
        x="Decile",
@@ -324,31 +324,28 @@ GICconsumo<-GICconsumo%>%
          Deciles=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
          orden=1:11)
 
-media<-mean(GICTotal$Rate)
-mediana<-median(GICTotal$Rate)
 
-max<-round((max(GICTotal$Rate)+1.5),0)
-min<-round((min(GICTotal$Rate)+1.5),0)
+max<-round((max(GICconsumo$Rate)+1.5),0)
+min<-round((min(GICconsumo$Rate)+1.5),0)
 
-GIC_Nacional<-GICTotal%>%
+GIC_cons<-GICconsumo%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(Deciles,Rate))+
   geom_col()+
-  labs(title = "Growth Incidence Curve, Mexico, 2010-2018",
+  labs(title ="FIgure 2
+Mexico
+Growth Incidence Curve by consumption
+2010-2012",
        y="Growth rate (total)",
        x="Decile")+
-  scale_y_continuous(breaks=seq(min,max,1))+
+  scale_y_continuous(breaks=seq(0,max,10))+
+  geom_text(aes(label = round(Rate,2)),
+            nudge_y =3)+
   theme_minimal()
 
-GIC_Nacional
 
-GIC_Nacional<-ggplotly(GIC_Nacional)
+GIC_cons
 
-GIC_Nacional
-
-saveWidget(GIC_Nacional,fil="GIC_Mexico_total.html")
-
-rm(list=ls())
 
 ######### 2012-2014 ##############
 Tasa_total<-((Deciles_por_fuente_2014$`ING COR2014`- Deciles_por_fuente_2012$`ING COR2012`)/Deciles_por_fuente_2012$`ING COR2012`)*100
@@ -461,9 +458,9 @@ GIC<-cuadro_final%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(x=Deciles, y=value , fill= variable),position= "dodge")+
   geom_col()+
-  labs(title = "Figure 2
+  labs(title = "Figure 3
 Mexico
-Growth Incidence Curve
+Growth Incidence Curve by income
 2012-2014",
        y="Growth rate (total)",
        x="Decile",
@@ -486,6 +483,39 @@ Growth Incidence Curve
 
 GIC
 
+######## Consumo 
+
+
+GICconsumo<-data.frame(consumo_2012,consumo_2014)
+
+
+
+GICconsumo<-GICconsumo%>%
+  mutate(Rate=((Consumo_2014-Consumo_2012)/Consumo_2012)*100,
+         Deciles=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
+         orden=1:11)
+
+
+max<-round((max(GICconsumo$Rate)+1.5),0)
+min<-round((min(GICconsumo$Rate)+1.5),0)
+
+GIC_cons<-GICconsumo%>%
+  mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
+  ggplot(aes(Deciles,Rate))+
+  geom_col()+
+  labs(title ="FIgure 4
+Mexico
+Growth Incidence Curve by consumption
+2012-2014",
+       y="Growth rate (total)",
+       x="Decile")+
+  scale_y_continuous(breaks=seq(-15,max,1))+
+  geom_text(aes(label = round(Rate,2)),
+            nudge_y =-2)+
+  theme_minimal()
+
+
+GIC_cons
 
 
 ######### 2014-2016 ##############
@@ -599,9 +629,9 @@ GIC<-cuadro_final%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(x=Deciles, y=value , fill= variable),position= "dodge")+
   geom_col()+
-  labs(title = "Figure 3
+  labs(title = "Figure 5
 Mexico
-Growth Incidence Curve
+Growth Incidence Curve by income
 2014-2016",
        y="Growth rate (total)",
        x="Decile",
@@ -626,143 +656,50 @@ GIC
 
 
 
-######### 2014-2016 ##############
-Tasa_total<-((Deciles_por_fuente_2016$`ING COR2016`- Deciles_por_fuente_2014$`ING COR2014`)/Deciles_por_fuente_2014$`ING COR2014`)*100
-
-######################## Trabajo 
-
-trabajo<-data.frame(trabajo2014=Deciles_por_fuente_2014$TRABAJO2014,
-                    trabajo2016=Deciles_por_fuente_2016$TRABAJO2016,
-                    ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                    ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                    Tasa_total)
-
-trabajo<-trabajo%>%
-  mutate(trabajo_aporte=((trabajo2016-trabajo2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
-
-################################### Rentas 
-rentas<-data.frame(rentas2014=Deciles_por_fuente_2014$RENTAS2014,
-                   rentas2016=Deciles_por_fuente_2016$RENTAS2016,
-                   ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                   ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                   Tasa_total)
-rentas<-rentas%>%
-  mutate(rentas_aporte=((rentas2016-rentas2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
-
-################################### TRANSFERENCES 
-
-TRANSFERENCES<-data.frame(TRANSFERENCES2014=Deciles_por_fuente_2014$TRANSFERENCES2014,
-                          TRANSFERENCES2016=Deciles_por_fuente_2016$TRANSFERENCES2016,
-                          ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                          ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                          Tasa_total)
-TRANSFERENCES<-TRANSFERENCES%>%
-  mutate(TRANSFERENCES_aporte=((TRANSFERENCES2016-TRANSFERENCES2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
+######## Consumo 
 
 
-################################### Benegobierno 
-
-benegobierno<-data.frame(benegob2014=Deciles_por_fuente_2014$BENEGOBIERNO2014,
-                         benegob2016=Deciles_por_fuente_2016$BENEGOBIERNO2016,
-                         ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                         ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                         Tasa_total)
-
-benegobierno<-benegobierno%>%
-  mutate(benegob_aporte=((benegob2016-benegob2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
-
-################################### OTHERS
-
-OTHERS<-data.frame(OTHERS2014=Deciles_por_fuente_2014$OTHERS2014, 
-                   OTHERS2016=Deciles_por_fuente_2016$OTHERS2016,
-                   ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                   ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                   Tasa_total)
-
-OTHERS<-OTHERS%>%
-  mutate(OTHERS_aporte=((OTHERS2016-OTHERS2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
-
-
-################################### Cuadro final 
-
-cuadro_final<-data.frame(
-  Labor=trabajo$trabajo_aporte,
-  Capital=rentas$rentas_aporte,
-  "Social programs"=benegobierno$benegob_aporte,
-  "Other transfers"=TRANSFERENCES$TRANSFERENCES_aporte,
-  "Imputed rent and other income"=OTHERS$OTHERS_aporte)
-
-prueba<-cuadro_final%>%
-  mutate(Prueba=Labor+Capital+Social.programs+Other.transfers+Imputed.rent.and.other.income)
-
-all.equal(Tasa_total,prueba$Prueba)
+GICconsumo<-data.frame(consumo_2014,consumo_2016)
 
 
 
-names(cuadro_final)<-c("Labor","Capital","Social programs","Other transfers","Imputed rent 
-and other income")
+GICconsumo<-GICconsumo%>%
+  mutate(Rate=((Consumo_2016-Consumo_2014)/Consumo_2014)*100,
+         Deciles=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
+         orden=1:11)
 
-cuadro_final<-cuadro_final%>%
-  mutate(Deciles= c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))
 
-row.names(cuadro_final)<-c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X")
+max<-round((max(GICconsumo$Rate)+1.5),0)
+min<-round((min(GICconsumo$Rate)+1.5),0)
 
-cuadro_final<-cuadro_final%>%
-  mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))
+labels<-GICconsumo$Rate
 
-cuadro_final<-melt(cuadro_final)
-
-labels<-cuadro_final%>%
-  mutate(labels=ifelse(value>0,value,0))%>%
-  group_by(Deciles)%>%
-  summarize(sum(labels)+1.5)
-
-labels<-labels$`sum(labels) + 1.5`
-
-max<-cuadro_final%>%
-  group_by(Deciles)%>%
-  filter(value>0)%>%
-  summarize(sum(value))
-
-max<-round(max(max$`sum(value)`)+2)
-
-min<-cuadro_final%>%
-  group_by(Deciles)%>%
-  filter(value<0)%>%
-  summarize(sum(value))
-
-min<-round(min(min$`sum(value)`)-2)
-
-GIC<-cuadro_final%>%
+GIC_cons<-GICconsumo%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
-  ggplot(aes(x=Deciles, y=value , fill= variable),position= "dodge")+
+  ggplot(aes(Deciles,Rate))+
   geom_col()+
-  labs(title = "Figure 3
+  labs(title ="FIgure 6
 Mexico
-Growth Incidence Curve
+Growth Incidence Curve by consumption
 2014-2016",
        y="Growth rate (total)",
-       x="Decile",
-       fill="Source of
-  income")+
-  geom_hline(yintercept = 0)+
-  scale_y_continuous(breaks = seq(min,max,1),labels = rep(c(""),abs(min-max)+1))+
-  annotate("text", x= "Mean", y= labels[1], label=round(Tasa_total[1],2))+
-  annotate("text", x= "I", y= labels[2], label=round(Tasa_total[2],2))+
-  annotate("text", x= "II", y= labels[3], label=round(Tasa_total[3],2))+
-  annotate("text", x= "III", y= labels[4], label=round(Tasa_total[4],2))+
-  annotate("text", x= "IV", y= labels[5], label=round(Tasa_total[5],2))+
-  annotate("text", x= "V", y= labels[6], label=round(Tasa_total[6],2))+
-  annotate("text", x= "VI", y= labels[7], label=round(Tasa_total[7],2))+
-  annotate("text", x= "VII", y= labels[8], label=round(Tasa_total[8],2))+
-  annotate("text", x= "VIII", y= labels[9], label=round(Tasa_total[9],2))+
-  annotate("text", x= "IX", y= labels[10], label=round(Tasa_total[10],2))+
-  annotate("text", x= "X", y= labels[11], label=round(Tasa_total[11],2))+
+       x="Decile")+
+  scale_y_continuous(breaks=seq(min,max,1))+
+  annotate("text", x= "Mean", y= labels[1]+2, label=round(labels[1],2))+
+  annotate("text", x= "I", y= labels[2]+2, label=round(labels[2],2))+
+  annotate("text", x= "II", y= labels[3]+2, label=round(labels[3],2))+
+  annotate("text", x= "III", y= labels[4]+2, label=round(labels[4],2))+
+  annotate("text", x= "IV", y= labels[5]+2, label=round(labels[5],2))+
+  annotate("text", x= "V", y= labels[6]+2, label=round(labels[6],2))+
+  annotate("text", x= "VI", y= labels[7]+2, label=round(labels[7],2))+
+  annotate("text", x= "VII", y= labels[8]+2, label=round(labels[8],2))+
+  annotate("text", x= "VIII", y= labels[9]+2, label=round(labels[9],2))+
+  annotate("text", x= "IX", y= labels[10]+2, label=round(labels[10],2))+
+  annotate("text", x= "X", y= labels[11]-2, label=round(labels[11],2))+
   theme_minimal()
 
-GIC
 
-
+GIC_cons
 
 ######### 2016-2018 ##############
 Tasa_total<-((Deciles_por_fuente_2018$`ING COR2018`- Deciles_por_fuente_2016$`ING COR2016`)/Deciles_por_fuente_2016$`ING COR2016`)*100
@@ -875,9 +812,9 @@ GIC<-cuadro_final%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(x=Deciles, y=value , fill= variable),position= "dodge")+
   geom_col()+
-  labs(title = "Figure 4
+  labs(title = "Figure 7
 Mexico
-Growth Incidence Curve
+Growth Incidence Curve by income
 2016-2018",
        y="Growth rate (total)",
        x="Decile",
@@ -900,6 +837,51 @@ Growth Incidence Curve
 
 GIC
 
+
+######## Consumo 
+
+
+GICconsumo<-data.frame(consumo_2016,consumo_2018)
+
+
+
+GICconsumo<-GICconsumo%>%
+  mutate(Rate=((Consumo_2018-Consumo_2016)/Consumo_2016)*100,
+         Deciles=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
+         orden=1:11)
+
+
+max<-round((max(GICconsumo$Rate)+1.5),0)
+min<-round((min(GICconsumo$Rate)+1.5),0)
+
+labels<-GICconsumo$Rate
+
+GIC_cons<-GICconsumo%>%
+  mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
+  ggplot(aes(Deciles,Rate))+
+  geom_col()+
+  labs(title ="FIgure 8
+Mexico
+Growth Incidence Curve by consumption
+2016-2018",
+       y="Growth rate (total)",
+       x="Decile")+
+  scale_y_continuous(breaks=seq(min,max,1))+
+  annotate("text", x= "Mean", y= labels[1]+2, label=round(labels[1],2))+
+  annotate("text", x= "I", y= labels[2]+2, label=round(labels[2],2))+
+  annotate("text", x= "II", y= labels[3]+2, label=round(labels[3],2))+
+  annotate("text", x= "III", y= labels[4]+2, label=round(labels[4],2))+
+  annotate("text", x= "IV", y= labels[5]+2, label=round(labels[5],2))+
+  annotate("text", x= "V", y= labels[6]+2, label=round(labels[6],2))+
+  annotate("text", x= "VI", y= labels[7]+2, label=round(labels[7],2))+
+  annotate("text", x= "VII", y= labels[8]+2, label=round(labels[8],2))+
+  annotate("text", x= "VIII", y= labels[9]+2, label=round(labels[9],2))+
+  annotate("text", x= "IX", y= labels[10]+2, label=round(labels[10],2))+
+  annotate("text", x= "X", y= labels[11]+2, label=round(labels[11],2))+
+  theme_minimal()
+
+
+GIC_cons
 
 
 ######### 2010-2014 ##############
@@ -1013,9 +995,9 @@ GIC<-cuadro_final%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(x=Deciles, y=value , fill= variable),position= "dodge")+
   geom_col()+
-  labs(title = "Figure 5
+  labs(title = "Figure 9
 Mexico
-Growth Incidence Curve
+Growth Incidence Curve by income
 2010-2014",
        y="Growth rate (total)",
        x="Decile",
@@ -1038,4 +1020,47 @@ Growth Incidence Curve
 
 GIC
 
+######## Consumo 
 
+
+GICconsumo<-data.frame(consumo_2010,consumo_2014)
+
+
+
+GICconsumo<-GICconsumo%>%
+  mutate(Rate=((Consumo_2014-Consumo_2010)/Consumo_2010)*100,
+         Deciles=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
+         orden=1:11)
+
+
+max<-round((max(GICconsumo$Rate)+1.5),0)
+min<-round((min(GICconsumo$Rate)+1.5),0)
+
+labels<-GICconsumo$Rate
+
+GIC_cons<-GICconsumo%>%
+  mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
+  ggplot(aes(Deciles,Rate))+
+  geom_col()+
+  labs(title ="FIgure 10
+Mexico
+Growth Incidence Curve by consumption
+2010-2014",
+       y="Growth rate (total)",
+       x="Decile")+
+  scale_y_continuous(breaks=seq(0,max,10))+
+  annotate("text", x= "Mean", y= labels[1]+2, label=round(labels[1],2))+
+  annotate("text", x= "I", y= labels[2]+2, label=round(labels[2],2))+
+  annotate("text", x= "II", y= labels[3]+2, label=round(labels[3],2))+
+  annotate("text", x= "III", y= labels[4]+2, label=round(labels[4],2))+
+  annotate("text", x= "IV", y= labels[5]+2, label=round(labels[5],2))+
+  annotate("text", x= "V", y= labels[6]+2, label=round(labels[6],2))+
+  annotate("text", x= "VI", y= labels[7]+2, label=round(labels[7],2))+
+  annotate("text", x= "VII", y= labels[8]+2, label=round(labels[8],2))+
+  annotate("text", x= "VIII", y= labels[9]+2, label=round(labels[9],2))+
+  annotate("text", x= "IX", y= labels[10]+2, label=round(labels[10],2))+
+  annotate("text", x= "X", y= labels[11]+2, label=round(labels[11],2))+
+  theme_minimal()
+
+
+GIC_cons
