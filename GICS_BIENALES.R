@@ -313,7 +313,8 @@ Growth Incidence Curve by Income
 
 GIC
 
-########## Consumo 
+######## Consumo 
+
 
 GICconsumo<-data.frame(consumo_2010,consumo_2012)
 
@@ -328,6 +329,8 @@ GICconsumo<-GICconsumo%>%
 max<-round((max(GICconsumo$Rate)+1.5),0)
 min<-round((min(GICconsumo$Rate)+1.5),0)
 
+labels<-GICconsumo$Rate
+
 GIC_cons<-GICconsumo%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(Deciles,Rate))+
@@ -338,13 +341,24 @@ Growth Incidence Curve by consumption
 2010-2012",
        y="Growth rate (total)",
        x="Decile")+
-  scale_y_continuous(breaks=seq(0,max,10))+
-  geom_text(aes(label = round(Rate,2)),
-            nudge_y =3)+
+  scale_y_continuous(breaks=seq(-4,max,1))+
+  annotate("text", x= "Mean", y= labels[1]+2, label=round(labels[1],2))+
+  annotate("text", x= "I", y= labels[2]+2, label=round(labels[2],2))+
+  annotate("text", x= "II", y= labels[3]+2, label=round(labels[3],2))+
+  annotate("text", x= "III", y= labels[4]-2, label=round(labels[4],2))+
+  annotate("text", x= "IV", y= labels[5]-2, label=round(labels[5],2))+
+  annotate("text", x= "V", y= labels[6]+2, label=round(labels[6],2))+
+  annotate("text", x= "VI", y= labels[7]-2, label=round(labels[7],2))+
+  annotate("text", x= "VII", y= labels[8]+2, label=round(labels[8],2))+
+  annotate("text", x= "VIII", y= labels[9]+2, label=round(labels[9],2))+
+  annotate("text", x= "IX", y= labels[10]+2, label=round(labels[10],2))+
+  annotate("text", x= "X", y= labels[11]+2, label=round(labels[11],2))+
   theme_minimal()
 
 
-GIC_cons
+GIC_cons 
+
+
 
 
 ######### 2012-2014 ##############
