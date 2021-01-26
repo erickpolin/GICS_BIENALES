@@ -7,7 +7,7 @@ library(reshape2)
 
 ########## 2010
 
-setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH 2010/ENIGH2010"))
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH 2010/ENIGH2010"))
 Deciles_por_fuente_2010<-read.dbf("Nacional por fuente por DECIL estimaciones 2010.dbf")
 
 consumo_2010<-read.dbf("Nacional Consumo  por DECIL 2010.dbf")
@@ -43,7 +43,7 @@ all.equal(Deciles_por_fuente_2010$`ING COR2010`,Deciles_por_fuente_2010$prueba2)
 
 ######### 2012
 
-setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH_2012/ENIGH2012"))
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2012/ENIGH2012"))
 Deciles_por_fuente_2012<-read.dbf("Nacional por fuente por DECIL estimaciones 2012.dbf")
 
 consumo_2012<-read.dbf("Nacional Consumo  por DECIL 2012.dbf")
@@ -78,7 +78,7 @@ all.equal(Deciles_por_fuente_2012$`ING COR2012`,Deciles_por_fuente_2012$prueba2)
 
 ######### 2014
 
-setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH_2014/ENIGH_2014"))
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2014/ENIGH_2014"))
 Deciles_por_fuente_2014<-read.dbf("Nacional por fuente por DECIL estimaciones 2014.dbf")
 
 consumo_2014<-read.dbf("Nacional Consumo  por DECIL 2014.dbf")
@@ -111,7 +111,7 @@ all.equal(Deciles_por_fuente_2014$`ING COR2014`,Deciles_por_fuente_2014$prueba2)
 
 ######## 2016
 
-setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH_2016/ENIGH_2016"))
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2016/ENIGH_2016"))
 Deciles_por_fuente_2016<-read.dbf("Nacional por fuente por DECIL estimaciones 2016.dbf")
 
 
@@ -145,7 +145,7 @@ all.equal(Deciles_por_fuente_2016$`ING COR2016`,Deciles_por_fuente_2016$prueba2)
 
 ############ 2018
 
-setwd(c("C:/Users/Erick/Dropbox/GIC/GITHUB2018/GIC/ENIGH 2018/ENIGH2018"))
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH 2018/ENIGH2018"))
 Deciles_por_fuente_2018<-read.dbf("Nacional por fuente por DECIL estimaciones 2018.dbf")
 
 consumo_2018<-read.dbf("Nacional Consumo  por DECIL 2018.dbf")
