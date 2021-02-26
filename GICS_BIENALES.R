@@ -1078,3 +1078,79 @@ Growth Incidence Curve by consumption
 
 
 GIC_cons
+
+
+
+#proporciones de ingres
+library(tidyverse)
+library(reshape2)
+base_2018<-data.frame(Decil=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
+                 Labor=c(0.67,0.39,0.54,0.62,0.66,0.68,0.71,0.73,0.72,0.72,0.64),
+                 "Capital gains"=c(0.06,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.03,0.04,0.13),
+                 "Social transfers"=c(0.01,0.14,0.07,0.04,0.03,0.02,0.02,0.01,0.01,0.00,0.00),
+                 "Others transfers"=c(0.14,0.23,0.20,0.17,0.15,0.15,0.13,0.12,0.13,0.13,0.14),
+                 "Imputed,rent,and,other,income"=c(0.11,0.23,0.18,0.15,0.14,0.13,0.12,0.12,0.11,0.10,0.09))
+
+names(base_2018)<-c("Decil","Labor","Capital gains","Social transfers","Others transfers","Imputed rent and other income")
+
+
+base_2018<-melt(base_2018)
+
+grafica_2018<-base_2018%>%
+  mutate(Decil=fct_relevel(Decil,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
+  mutate(variable=fct_relevel(variable,"Social transfers","Capital gains","Others transfers","Imputed rent and other income","Labor"))%>%
+  ggplot(aes(Decil,value, fill= variable),position= "dodge")+
+  geom_col()+
+  theme_minimal()
+
+grafica_2018<-grafica_2018+theme(legend.position="bottom")
+
+grafica_2018<-grafica_2018+ggtitle("2018")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+grafica_2018<-grafica_2018+
+  theme(legend.title = element_blank())+
+  xlab("") + ylab("")
+
+grafica_2018
+
+library(tidyverse)
+base_2010<-data.frame(Decil=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
+                      Labor=c(0.68,0.38,0.52,0.60,0.63,0.66,0.69,0.70,0.71,0.71,0.69),
+                      "Capital gains"=c(0.04,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.03,0.07),
+                      "Social transfers"=c(0.02,0.18,0.09,0.05,0.04,0.03,0.02,0.01,0.01,0.01,0.00),
+                      "Others transfers"=c(0.14,0.19,0.19,0.18,0.17,0.15,0.14,0.13,0.13,0.13,0.12),
+                      "Imputed,rent,and,other,income"=c(0.13,0.24,0.19,0.16,0.15,0.15,0.14,0.14,0.13,0.13,0.11))
+
+names(base_2010)<-c("Decil","Labor","Capital gains","Social transfers","Others transfers","Imputed rent and other income")
+
+base_2010<-melt(base_2010)
+
+grafica_2010<-base_2010%>%
+  mutate(Decil=fct_relevel(Decil,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
+  mutate(variable=fct_relevel(variable,"Social transfers","Capital gains","Others transfers","Imputed rent and other income","Labor"))%>%
+  ggplot(aes(Decil,value, fill= variable),position= "dodge")+
+  geom_col()+
+  theme_minimal()
+
+grafica_2010<-grafica_2010+theme(legend.position="bottom")
+
+grafica_2010<-grafica_2010+ggtitle("2010")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+grafica_2010<-grafica_2010+
+  theme(legend.title = element_blank())+
+  xlab("") + ylab("")
+
+grafica_2010
+
+library(ggpubr)
+
+final<-ggarrange(grafica_2010,grafica_2018,ncol = 1, nrow = 2)
+
+annotate_figure(final,top = text_grob("Figure 2
+Mexico
+Relative contribution by source of income to total household income",
+                                      color = "black", face = "bold", size = 14))
+
+
