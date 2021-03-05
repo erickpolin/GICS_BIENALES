@@ -4,17 +4,12 @@ library(tidyverse)
 library(plotly)
 library(htmlwidgets)
 library(reshape2)
+library(writexl)
 
 ########## 2010
 
 setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH 2010/ENIGH2010"))
 Deciles_por_fuente_2010<-read.dbf("Nacional por fuente por DECIL estimaciones 2010.dbf")
-
-consumo_2010<-read.dbf("Nacional Consumo  por DECIL 2010.dbf")
-
-consumo_2010<-as.data.frame(consumo_2010)
-
-names(consumo_2010)=c("Consumo_2010")
 
 names(Deciles_por_fuente_2010)=c("ING COR2010", "TRABAJO2010", "SUBORDINADO2010", "NEGOCIOS2010","OTROS TRAB2010", "RENTAS2010","UTILIDAD2010", "ARRENDA2010", "TRANSFER2010","JUBILACION2010", "BECAS2010", "DONATIVOS2010", "REMESAS2010", "BENEGOBIERNO2010", "TRANS HOG2010", "TRANS INST2010", "ESTIM ALQU2010", "OTROS INGRESOS2010")
 
@@ -38,6 +33,41 @@ Deciles_por_fuente_2010<-Deciles_por_fuente_2010%>%
 
 all.equal(Deciles_por_fuente_2010$`ING COR2010`,Deciles_por_fuente_2010$prueba2)
 
+#### bottom
+
+bottom_por_fuente_2010<-read.dbf("Nacional por fuente por Bottom_40 estimaciones 2010.dbf")
+
+names(bottom_por_fuente_2010)=c("ING COR2010", "TRABAJO2010", "SUBORDINADO2010", "NEGOCIOS2010","OTROS TRAB2010", "RENTAS2010","UTILIDAD2010", "ARRENDA2010", "TRANSFER2010","JUBILACION2010", "BECAS2010", "DONATIVOS2010", "REMESAS2010", "BENEGOBIERNO2010", "TRANS HOG2010", "TRANS INST2010", "ESTIM ALQU2010", "OTROS INGRESOS2010")
+
+bottom_por_fuente_2010<-bottom_por_fuente_2010%>%
+  mutate(prueba=bottom_por_fuente_2010$TRABAJO2010+bottom_por_fuente_2010$RENTAS2010+
+           bottom_por_fuente_2010$JUBILACION2010+bottom_por_fuente_2010$BECAS2010+
+           bottom_por_fuente_2010$DONATIVOS2010+bottom_por_fuente_2010$REMESAS2010+
+           bottom_por_fuente_2010$BENEGOBIERNO2010+bottom_por_fuente_2010$`TRANS HOG2010`+
+           bottom_por_fuente_2010$`TRANS INST2010`+bottom_por_fuente_2010$`ESTIM ALQU2010`+
+           bottom_por_fuente_2010$`OTROS INGRESOS2010`)
+
+all.equal(bottom_por_fuente_2010$`ING COR2010`,bottom_por_fuente_2010$prueba)
+
+
+bottom_por_fuente_2010<-bottom_por_fuente_2010%>%
+  mutate("TRANSFERENCES2010"=JUBILACION2010+BECAS2010+DONATIVOS2010+REMESAS2010+`TRANS HOG2010`+`TRANS INST2010`,
+         "OTHERS2010"=`ESTIM ALQU2010`+`OTROS INGRESOS2010`)
+
+bottom_por_fuente_2010<-bottom_por_fuente_2010%>%
+  mutate(prueba2=TRABAJO2010+RENTAS2010+BENEGOBIERNO2010+TRANSFERENCES2010+OTHERS2010)
+
+all.equal(bottom_por_fuente_2010$`ING COR2010`,bottom_por_fuente_2010$prueba2)
+
+
+####consumo
+
+consumo_2010<-read.dbf("Nacional Consumo  por DECIL 2010.dbf")
+
+consumo_2010<-as.data.frame(consumo_2010)
+
+names(consumo_2010)=c("Consumo_2010")
+
 
 
 
@@ -45,12 +75,6 @@ all.equal(Deciles_por_fuente_2010$`ING COR2010`,Deciles_por_fuente_2010$prueba2)
 
 setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2012/ENIGH2012"))
 Deciles_por_fuente_2012<-read.dbf("Nacional por fuente por DECIL estimaciones 2012.dbf")
-
-consumo_2012<-read.dbf("Nacional Consumo  por DECIL 2012.dbf")
-
-consumo_2012<-as.data.frame(consumo_2012)
-
-names(consumo_2012)=c("Consumo_2012")
 
 names(Deciles_por_fuente_2012)=c("ING COR2012", "TRABAJO2012", "SUBORDINADO2012", "NEGOCIOS2012","OTROS TRAB2012", "RENTAS2012","UTILIDAD2012", "ARRENDA2012", "TRANSFER2012","JUBILACION2012", "BECAS2012", "DONATIVOS2012", "REMESAS2012", "BENEGOBIERNO2012", "TRANS HOG2012", "TRANS INST2012", "ESTIM ALQU2012", "OTROS INGRESOS2012")
 
@@ -73,8 +97,40 @@ Deciles_por_fuente_2012<-Deciles_por_fuente_2012%>%
 
 all.equal(Deciles_por_fuente_2012$`ING COR2012`,Deciles_por_fuente_2012$prueba2)
 
+#### bottom
+
+bottom_por_fuente_2012<-read.dbf("Nacional por fuente por Bottom_40 estimaciones 2012.dbf")
+
+names(bottom_por_fuente_2012)=c("ING COR2012", "TRABAJO2012", "SUBORDINADO2012", "NEGOCIOS2012","OTROS TRAB2012", "RENTAS2012","UTILIDAD2012", "ARRENDA2012", "TRANSFER2012","JUBILACION2012", "BECAS2012", "DONATIVOS2012", "REMESAS2012", "BENEGOBIERNO2012", "TRANS HOG2012", "TRANS INST2012", "ESTIM ALQU2012", "OTROS INGRESOS2012")
+
+bottom_por_fuente_2012<-bottom_por_fuente_2012%>%
+  mutate(prueba=bottom_por_fuente_2012$TRABAJO2012+bottom_por_fuente_2012$RENTAS2012+
+           bottom_por_fuente_2012$JUBILACION2012+bottom_por_fuente_2012$BECAS2012+
+           bottom_por_fuente_2012$DONATIVOS2012+bottom_por_fuente_2012$REMESAS2012+
+           bottom_por_fuente_2012$BENEGOBIERNO2012+bottom_por_fuente_2012$`TRANS HOG2012`+
+           bottom_por_fuente_2012$`TRANS INST2012`+bottom_por_fuente_2012$`ESTIM ALQU2012`+
+           bottom_por_fuente_2012$`OTROS INGRESOS2012`)
+
+all.equal(bottom_por_fuente_2012$`ING COR2012`,bottom_por_fuente_2012$prueba)
 
 
+bottom_por_fuente_2012<-bottom_por_fuente_2012%>%
+  mutate("TRANSFERENCES2012"=JUBILACION2012+BECAS2012+DONATIVOS2012+REMESAS2012+`TRANS HOG2012`+`TRANS INST2012`,
+         "OTHERS2012"=`ESTIM ALQU2012`+`OTROS INGRESOS2012`)
+
+bottom_por_fuente_2012<-bottom_por_fuente_2012%>%
+  mutate(prueba2=TRABAJO2012+RENTAS2012+BENEGOBIERNO2012+TRANSFERENCES2012+OTHERS2012)
+
+all.equal(bottom_por_fuente_2012$`ING COR2012`,bottom_por_fuente_2012$prueba2)
+
+
+### consumo
+
+consumo_2012<-read.dbf("Nacional Consumo  por DECIL 2012.dbf")
+
+consumo_2012<-as.data.frame(consumo_2012)
+
+names(consumo_2012)=c("Consumo_2012")
 
 ######### 2014
 
@@ -177,7 +233,7 @@ all.equal(Deciles_por_fuente_2018$`ING COR2018`,Deciles_por_fuente_2018$prueba2)
 
 
 
-######### 2010-2012 ##############
+######### 2010-2012 por decil ##############
 Tasa_total<-(((Deciles_por_fuente_2012$`ING COR2012`/Deciles_por_fuente_2010$`ING COR2010`)^(1/2))-1)*100
 
 ######################## Trabajo 
@@ -358,10 +414,34 @@ Growth Incidence Curve by consumption
 
 GIC_cons 
 
+######### 2010-2012 por bottom ##############
+cuadro_2010_2012<-data.frame("Total"=(((bottom_por_fuente_2012$`ING COR2012`/bottom_por_fuente_2010$`ING COR2010`)^(1/2))-1)*100,
+                             "Labor"=(((bottom_por_fuente_2012$TRABAJO2012/bottom_por_fuente_2010$TRABAJO2010)^(1/2))-1)*100,
+                             "Capital"=(((bottom_por_fuente_2012$RENTAS2012/bottom_por_fuente_2010$RENTAS2010)^(1/2))-1)*100,
+                             "Social programs"=(((bottom_por_fuente_2012$BENEGOBIERNO2012/bottom_por_fuente_2010$BENEGOBIERNO2010)^(1/2))-1)*100,
+                             "Other transfers"=(((bottom_por_fuente_2012$TRANSFERENCES2012/bottom_por_fuente_2010$TRANSFERENCES2010)^(1/2))-1)*100,
+                             "Imputed rent and other income"=(((bottom_por_fuente_2012$OTHERS2012/bottom_por_fuente_2010$OTHERS2010)^(1/2))-1)*100)
+
+row.names(cuadro_2010_2012)<-c("Mean","Upper 60%","Bottom 40%")
 
 
+cuadro_2010_2012<-cuadro_2010_2012[c("Mean","Bottom 40%","Upper 60%"),]
+
+cuadro_2010_2012<-t(cuadro_2010_2012)
+
+cuadro_2010_2012<-as.data.frame(cuadro_2010_2012)
+
+cuadro_2010_2012<-cuadro_2010_2012%>%
+  mutate(PPI=cuadro_2010_2012$`Bottom 40%`-cuadro_2010_2012$Mean)
+
+row.names(cuadro_2010_2012)<-c("Total","Labor","Capital","Social programs","Other transfers","Imputed rent and other income")
 
 
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/GICS_BIENALES/GICS_BIENALES/"))
+
+write.dbf(cuadro_2010_2012,c("cuadro20102012.dbf"))
+
+write_xlsx(cuadro_2010_2012,"cuadro20102012.xlsx")
 
 
 
