@@ -414,28 +414,83 @@ Growth Incidence Curve by consumption
 
 GIC_cons 
 
-######### 2010-2012 por bottom ##############
-cuadro_2010_2012<-data.frame("Total"=(((bottom_por_fuente_2012$`ING COR2012`/bottom_por_fuente_2010$`ING COR2010`)^(1/2))-1)*100,
-                             "Labor"=(((bottom_por_fuente_2012$TRABAJO2012/bottom_por_fuente_2010$TRABAJO2010)^(1/2))-1)*100,
-                             "Capital"=(((bottom_por_fuente_2012$RENTAS2012/bottom_por_fuente_2010$RENTAS2010)^(1/2))-1)*100,
-                             "Social programs"=(((bottom_por_fuente_2012$BENEGOBIERNO2012/bottom_por_fuente_2010$BENEGOBIERNO2010)^(1/2))-1)*100,
-                             "Other transfers"=(((bottom_por_fuente_2012$TRANSFERENCES2012/bottom_por_fuente_2010$TRANSFERENCES2010)^(1/2))-1)*100,
-                             "Imputed rent and other income"=(((bottom_por_fuente_2012$OTHERS2012/bottom_por_fuente_2010$OTHERS2010)^(1/2))-1)*100)
+######### 2010-2012  por estados media ##############
 
-row.names(cuadro_2010_2012)<-c("Mean","Upper 60%","Bottom 40%")
+#### 2010
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH 2010/ENIGH2010"))
+mean_estados_por_fuente_2010<-read.dbf("ESTADOS MEAN por fuente por estimaciones 2010.dbf")
+
+names(mean_estados_por_fuente_2010)=c("ING COR2010", "TRABAJO2010", "SUBORDINADO2010", "NEGOCIOS2010","OTROS TRAB2010", "RENTAS2010","UTILIDAD2010", "ARRENDA2010", "TRANSFER2010","JUBILACION2010", "BECAS2010", "DONATIVOS2010", "REMESAS2010", "BENEGOBIERNO2010", "TRANS HOG2010", "TRANS INST2010", "ESTIM ALQU2010", "OTROS INGRESOS2010")
+
+mean_estados_por_fuente_2010<-mean_estados_por_fuente_2010%>%
+  mutate(prueba=mean_estados_por_fuente_2010$TRABAJO2010+mean_estados_por_fuente_2010$RENTAS2010+
+           mean_estados_por_fuente_2010$JUBILACION2010+mean_estados_por_fuente_2010$BECAS2010+
+           mean_estados_por_fuente_2010$DONATIVOS2010+mean_estados_por_fuente_2010$REMESAS2010+
+           mean_estados_por_fuente_2010$BENEGOBIERNO2010+mean_estados_por_fuente_2010$`TRANS HOG2010`+
+           mean_estados_por_fuente_2010$`TRANS INST2010`+mean_estados_por_fuente_2010$`ESTIM ALQU2010`+
+           mean_estados_por_fuente_2010$`OTROS INGRESOS2010`)
+
+all.equal(mean_estados_por_fuente_2010$`ING COR2010`,mean_estados_por_fuente_2010$prueba)
 
 
-cuadro_2010_2012<-cuadro_2010_2012[c("Mean","Bottom 40%","Upper 60%"),]
+mean_estados_por_fuente_2010<-mean_estados_por_fuente_2010%>%
+  mutate("TRANSFERENCES2010"=JUBILACION2010+BECAS2010+DONATIVOS2010+REMESAS2010+`TRANS HOG2010`+`TRANS INST2010`,
+         "OTHERS2010"=`ESTIM ALQU2010`+`OTROS INGRESOS2010`)
 
-cuadro_2010_2012<-t(cuadro_2010_2012)
+mean_estados_por_fuente_2010<-mean_estados_por_fuente_2010%>%
+  mutate(prueba2=TRABAJO2010+RENTAS2010+BENEGOBIERNO2010+TRANSFERENCES2010+OTHERS2010)
 
-cuadro_2010_2012<-as.data.frame(cuadro_2010_2012)
+all.equal(mean_estados_por_fuente_2010$`ING COR2010`,mean_estados_por_fuente_2010$prueba2)
 
-cuadro_2010_2012<-cuadro_2010_2012%>%
-  mutate(PPI=cuadro_2010_2012$`Bottom 40%`-cuadro_2010_2012$Mean)
 
-row.names(cuadro_2010_2012)<-c("Total","Labor","Capital","Social programs","Other transfers","Imputed rent and other income")
+mean_consumo_por_estado_2010<-read.dbf("ESTADOS MEAN Consumo 2010.dbf")
 
+#### 2012
+
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2012/ENIGH2012"))
+mean_estados_por_fuente_2012<-read.dbf("ESTADOS MEAN por fuente por estimaciones 2012.dbf")
+
+names(mean_estados_por_fuente_2012)=c("ING COR2012", "TRABAJO2012", "SUBORDINADO2012", "NEGOCIOS2012","OTROS TRAB2012", "RENTAS2012","UTILIDAD2012", "ARRENDA2012", "TRANSFER2012","JUBILACION2012", "BECAS2012", "DONATIVOS2012", "REMESAS2012", "BENEGOBIERNO2012", "TRANS HOG2012", "TRANS INST2012", "ESTIM ALQU2012", "OTROS INGRESOS2012")
+
+mean_estados_por_fuente_2012<-mean_estados_por_fuente_2012%>%
+  mutate(prueba=mean_estados_por_fuente_2012$TRABAJO2012+mean_estados_por_fuente_2012$RENTAS2012+
+           mean_estados_por_fuente_2012$JUBILACION2012+mean_estados_por_fuente_2012$BECAS2012+
+           mean_estados_por_fuente_2012$DONATIVOS2012+mean_estados_por_fuente_2012$REMESAS2012+
+           mean_estados_por_fuente_2012$BENEGOBIERNO2012+mean_estados_por_fuente_2012$`TRANS HOG2012`+
+           mean_estados_por_fuente_2012$`TRANS INST2012`+mean_estados_por_fuente_2012$`ESTIM ALQU2012`+
+           mean_estados_por_fuente_2012$`OTROS INGRESOS2012`)
+
+all.equal(mean_estados_por_fuente_2012$`ING COR2012`,mean_estados_por_fuente_2012$prueba)
+
+mean_estados_por_fuente_2012<-mean_estados_por_fuente_2012%>%
+  mutate("TRANSFERENCES2012"=JUBILACION2012+BECAS2012+DONATIVOS2012+REMESAS2012+`TRANS HOG2012`+`TRANS INST2012`,
+         "OTHERS2012"=`ESTIM ALQU2012`+`OTROS INGRESOS2012`)
+
+mean_estados_por_fuente_2012<-mean_estados_por_fuente_2012%>%
+  mutate(prueba2=TRABAJO2012+RENTAS2012+BENEGOBIERNO2012+TRANSFERENCES2012+OTHERS2012)
+
+all.equal(mean_estados_por_fuente_2012$`ING COR2012`,mean_estados_por_fuente_2012$prueba2)
+
+
+mean_consumo_por_estado_2012<-read.dbf("ESTADOS MEAN Consumo 2012.dbf")
+
+##### cuadros
+
+
+cuadro_2010_2012<-data.frame("Total"=(((mean_estados_por_fuente_2012$`ING COR2012`/mean_estados_por_fuente_2010$`ING COR2010`)^(1/2))-1)*100,
+                             "Labor"=(((mean_estados_por_fuente_2012$TRABAJO2012/mean_estados_por_fuente_2010$TRABAJO2010)^(1/2))-1)*100,
+                             "Capital"=(((mean_estados_por_fuente_2012$RENTAS2012/mean_estados_por_fuente_2010$RENTAS2010)^(1/2))-1)*100,
+                             "Social programs"=(((mean_estados_por_fuente_2012$BENEGOBIERNO2012/mean_estados_por_fuente_2010$BENEGOBIERNO2010)^(1/2))-1)*100,
+                             "Other transfers"=(((mean_estados_por_fuente_2012$TRANSFERENCES2012/mean_estados_por_fuente_2010$TRANSFERENCES2010)^(1/2))-1)*100,
+                             "Imputed rent and other income"=(((mean_estados_por_fuente_2012$OTHERS2012/mean_estados_por_fuente_2010$OTHERS2010)^(1/2))-1)*100)
+
+cuadro_consumo_2010_2012<-data.frame("consumption"=(((mean_consumo_por_estado_2012$c_Consumo_/mean_consumo_por_estado_2010)^(1/2))-1)*100)
+
+cuadro_2010_2012<-cbind(cuadro_2010_2012,cuadro_consumo_2010_2012)
+
+names(cuadro_2010_2012)<-c("Total","Labor","Capital","Social programs","Other transfers","Imputed rent and other income","Consumption")
 
 setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/GICS_BIENALES/GICS_BIENALES/"))
 
@@ -443,9 +498,180 @@ write.dbf(cuadro_2010_2012,c("cuadro20102012.dbf"))
 
 write_xlsx(cuadro_2010_2012,"cuadro20102012.xlsx")
 
+rm(list=ls())
 
 
+######### 2010-2012  por estados bottom ##############
 
+#### 2010
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH 2010/ENIGH2010"))
+bottom_estados_por_fuente_2010<-read.dbf("ESTADOS bottom 40 por fuente por ENTIDAD estimaciones 2010.dbf")
+
+names(bottom_estados_por_fuente_2010)=c("ING COR2010", "TRABAJO2010", "SUBORDINADO2010", "NEGOCIOS2010","OTROS TRAB2010", "RENTAS2010","UTILIDAD2010", "ARRENDA2010", "TRANSFER2010","JUBILACION2010", "BECAS2010", "DONATIVOS2010", "REMESAS2010", "BENEGOBIERNO2010", "TRANS HOG2010", "TRANS INST2010", "ESTIM ALQU2010", "OTROS INGRESOS2010")
+
+bottom_estados_por_fuente_2010<-bottom_estados_por_fuente_2010%>%
+  mutate(prueba=bottom_estados_por_fuente_2010$TRABAJO2010+bottom_estados_por_fuente_2010$RENTAS2010+
+           bottom_estados_por_fuente_2010$JUBILACION2010+bottom_estados_por_fuente_2010$BECAS2010+
+           bottom_estados_por_fuente_2010$DONATIVOS2010+bottom_estados_por_fuente_2010$REMESAS2010+
+           bottom_estados_por_fuente_2010$BENEGOBIERNO2010+bottom_estados_por_fuente_2010$`TRANS HOG2010`+
+           bottom_estados_por_fuente_2010$`TRANS INST2010`+bottom_estados_por_fuente_2010$`ESTIM ALQU2010`+
+           bottom_estados_por_fuente_2010$`OTROS INGRESOS2010`)
+
+all.equal(bottom_estados_por_fuente_2010$`ING COR2010`,bottom_estados_por_fuente_2010$prueba)
+
+
+bottom_estados_por_fuente_2010<-bottom_estados_por_fuente_2010%>%
+  mutate("TRANSFERENCES2010"=JUBILACION2010+BECAS2010+DONATIVOS2010+REMESAS2010+`TRANS HOG2010`+`TRANS INST2010`,
+         "OTHERS2010"=`ESTIM ALQU2010`+`OTROS INGRESOS2010`)
+
+bottom_estados_por_fuente_2010<-bottom_estados_por_fuente_2010%>%
+  mutate(prueba2=TRABAJO2010+RENTAS2010+BENEGOBIERNO2010+TRANSFERENCES2010+OTHERS2010)
+
+all.equal(bottom_estados_por_fuente_2010$`ING COR2010`,bottom_estados_por_fuente_2010$prueba2)
+
+
+bottom_consumo_por_estado_2010<-read.dbf("ESTADOS Consumo bottom 40 2010.dbf")
+
+#### 2012
+
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2012/ENIGH2012"))
+bottom_estados_por_fuente_2012<-read.dbf("ESTADOS bottom 40 por fuente por ENTIDAD estimaciones 2012.dbf")
+
+names(bottom_estados_por_fuente_2012)=c("ING COR2012", "TRABAJO2012", "SUBORDINADO2012", "NEGOCIOS2012","OTROS TRAB2012", "RENTAS2012","UTILIDAD2012", "ARRENDA2012", "TRANSFER2012","JUBILACION2012", "BECAS2012", "DONATIVOS2012", "REMESAS2012", "BENEGOBIERNO2012", "TRANS HOG2012", "TRANS INST2012", "ESTIM ALQU2012", "OTROS INGRESOS2012")
+
+bottom_estados_por_fuente_2012<-bottom_estados_por_fuente_2012%>%
+  mutate(prueba=bottom_estados_por_fuente_2012$TRABAJO2012+bottom_estados_por_fuente_2012$RENTAS2012+
+           bottom_estados_por_fuente_2012$JUBILACION2012+bottom_estados_por_fuente_2012$BECAS2012+
+           bottom_estados_por_fuente_2012$DONATIVOS2012+bottom_estados_por_fuente_2012$REMESAS2012+
+           bottom_estados_por_fuente_2012$BENEGOBIERNO2012+bottom_estados_por_fuente_2012$`TRANS HOG2012`+
+           bottom_estados_por_fuente_2012$`TRANS INST2012`+bottom_estados_por_fuente_2012$`ESTIM ALQU2012`+
+           bottom_estados_por_fuente_2012$`OTROS INGRESOS2012`)
+
+all.equal(bottom_estados_por_fuente_2012$`ING COR2012`,bottom_estados_por_fuente_2012$prueba)
+
+bottom_estados_por_fuente_2012<-bottom_estados_por_fuente_2012%>%
+  mutate("TRANSFERENCES2012"=JUBILACION2012+BECAS2012+DONATIVOS2012+REMESAS2012+`TRANS HOG2012`+`TRANS INST2012`,
+         "OTHERS2012"=`ESTIM ALQU2012`+`OTROS INGRESOS2012`)
+
+bottom_estados_por_fuente_2012<-bottom_estados_por_fuente_2012%>%
+  mutate(prueba2=TRABAJO2012+RENTAS2012+BENEGOBIERNO2012+TRANSFERENCES2012+OTHERS2012)
+
+all.equal(bottom_estados_por_fuente_2012$`ING COR2012`,bottom_estados_por_fuente_2012$prueba2)
+
+
+bottom_consumo_por_estado_2012<-read.dbf("ESTADOS Consumo bottom 40 2012.dbf")
+
+##### cuadros
+
+
+cuadro_2010_2012<-data.frame("Total"=(((bottom_estados_por_fuente_2012$`ING COR2012`/bottom_estados_por_fuente_2010$`ING COR2010`)^(1/2))-1)*100,
+                             "Labor"=(((bottom_estados_por_fuente_2012$TRABAJO2012/bottom_estados_por_fuente_2010$TRABAJO2010)^(1/2))-1)*100,
+                             "Capital"=(((bottom_estados_por_fuente_2012$RENTAS2012/bottom_estados_por_fuente_2010$RENTAS2010)^(1/2))-1)*100,
+                             "Social programs"=(((bottom_estados_por_fuente_2012$BENEGOBIERNO2012/bottom_estados_por_fuente_2010$BENEGOBIERNO2010)^(1/2))-1)*100,
+                             "Other transfers"=(((bottom_estados_por_fuente_2012$TRANSFERENCES2012/bottom_estados_por_fuente_2010$TRANSFERENCES2010)^(1/2))-1)*100,
+                             "Imputed rent and other income"=(((bottom_estados_por_fuente_2012$OTHERS2012/bottom_estados_por_fuente_2010$OTHERS2010)^(1/2))-1)*100)
+
+cuadro_consumo_2010_2012<-data.frame("consumption"=(((bottom_consumo_por_estado_2012$c_Consumo_/bottom_consumo_por_estado_2010)^(1/2))-1)*100)
+
+cuadro_2010_2012<-cbind(cuadro_2010_2012,cuadro_consumo_2010_2012)
+
+names(cuadro_2010_2012)<-c("Total","Labor","Capital","Social programs","Other transfers","Imputed rent and other income","Consumption")
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/GICS_BIENALES/GICS_BIENALES/"))
+
+write.dbf(cuadro_2010_2012,c("cuadro20102012 bottom.dbf"))
+
+write_xlsx(cuadro_2010_2012,"cuadro20102012 bottom.xlsx")
+
+rm(list=ls())
+
+######### 2010-2012  por estados upper ##############
+
+#### 2010
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH 2010/ENIGH2010"))
+upper_estados_por_fuente_2010<-read.dbf("ESTADOS upper 60 por fuente por ENTIDAD estimaciones 2010.dbf")
+
+names(upper_estados_por_fuente_2010)=c("ING COR2010", "TRABAJO2010", "SUBORDINADO2010", "NEGOCIOS2010","OTROS TRAB2010", "RENTAS2010","UTILIDAD2010", "ARRENDA2010", "TRANSFER2010","JUBILACION2010", "BECAS2010", "DONATIVOS2010", "REMESAS2010", "BENEGOBIERNO2010", "TRANS HOG2010", "TRANS INST2010", "ESTIM ALQU2010", "OTROS INGRESOS2010")
+
+upper_estados_por_fuente_2010<-upper_estados_por_fuente_2010%>%
+  mutate(prueba=upper_estados_por_fuente_2010$TRABAJO2010+upper_estados_por_fuente_2010$RENTAS2010+
+           upper_estados_por_fuente_2010$JUBILACION2010+upper_estados_por_fuente_2010$BECAS2010+
+           upper_estados_por_fuente_2010$DONATIVOS2010+upper_estados_por_fuente_2010$REMESAS2010+
+           upper_estados_por_fuente_2010$BENEGOBIERNO2010+upper_estados_por_fuente_2010$`TRANS HOG2010`+
+           upper_estados_por_fuente_2010$`TRANS INST2010`+upper_estados_por_fuente_2010$`ESTIM ALQU2010`+
+           upper_estados_por_fuente_2010$`OTROS INGRESOS2010`)
+
+all.equal(upper_estados_por_fuente_2010$`ING COR2010`,upper_estados_por_fuente_2010$prueba)
+
+
+upper_estados_por_fuente_2010<-upper_estados_por_fuente_2010%>%
+  mutate("TRANSFERENCES2010"=JUBILACION2010+BECAS2010+DONATIVOS2010+REMESAS2010+`TRANS HOG2010`+`TRANS INST2010`,
+         "OTHERS2010"=`ESTIM ALQU2010`+`OTROS INGRESOS2010`)
+
+upper_estados_por_fuente_2010<-upper_estados_por_fuente_2010%>%
+  mutate(prueba2=TRABAJO2010+RENTAS2010+BENEGOBIERNO2010+TRANSFERENCES2010+OTHERS2010)
+
+all.equal(upper_estados_por_fuente_2010$`ING COR2010`,upper_estados_por_fuente_2010$prueba2)
+
+
+upper_consumo_por_estado_2010<-read.dbf("ESTADOS Consumo upper 60 2010.dbf")
+
+#### 2012
+
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2012/ENIGH2012"))
+upper_estados_por_fuente_2012<-read.dbf("ESTADOS upper 60 por fuente por ENTIDAD estimaciones 2012.dbf")
+
+names(upper_estados_por_fuente_2012)=c("ING COR2012", "TRABAJO2012", "SUBORDINADO2012", "NEGOCIOS2012","OTROS TRAB2012", "RENTAS2012","UTILIDAD2012", "ARRENDA2012", "TRANSFER2012","JUBILACION2012", "BECAS2012", "DONATIVOS2012", "REMESAS2012", "BENEGOBIERNO2012", "TRANS HOG2012", "TRANS INST2012", "ESTIM ALQU2012", "OTROS INGRESOS2012")
+
+upper_estados_por_fuente_2012<-upper_estados_por_fuente_2012%>%
+  mutate(prueba=upper_estados_por_fuente_2012$TRABAJO2012+upper_estados_por_fuente_2012$RENTAS2012+
+           upper_estados_por_fuente_2012$JUBILACION2012+upper_estados_por_fuente_2012$BECAS2012+
+           upper_estados_por_fuente_2012$DONATIVOS2012+upper_estados_por_fuente_2012$REMESAS2012+
+           upper_estados_por_fuente_2012$BENEGOBIERNO2012+upper_estados_por_fuente_2012$`TRANS HOG2012`+
+           upper_estados_por_fuente_2012$`TRANS INST2012`+upper_estados_por_fuente_2012$`ESTIM ALQU2012`+
+           upper_estados_por_fuente_2012$`OTROS INGRESOS2012`)
+
+all.equal(upper_estados_por_fuente_2012$`ING COR2012`,upper_estados_por_fuente_2012$prueba)
+
+upper_estados_por_fuente_2012<-upper_estados_por_fuente_2012%>%
+  mutate("TRANSFERENCES2012"=JUBILACION2012+BECAS2012+DONATIVOS2012+REMESAS2012+`TRANS HOG2012`+`TRANS INST2012`,
+         "OTHERS2012"=`ESTIM ALQU2012`+`OTROS INGRESOS2012`)
+
+upper_estados_por_fuente_2012<-upper_estados_por_fuente_2012%>%
+  mutate(prueba2=TRABAJO2012+RENTAS2012+BENEGOBIERNO2012+TRANSFERENCES2012+OTHERS2012)
+
+all.equal(upper_estados_por_fuente_2012$`ING COR2012`,upper_estados_por_fuente_2012$prueba2)
+
+
+upper_consumo_por_estado_2012<-read.dbf("ESTADOS Consumo upper 60 2012.dbf")
+
+##### cuadros
+
+
+cuadro_2010_2012<-data.frame("Total"=(((upper_estados_por_fuente_2012$`ING COR2012`/upper_estados_por_fuente_2010$`ING COR2010`)^(1/2))-1)*100,
+                             "Labor"=(((upper_estados_por_fuente_2012$TRABAJO2012/upper_estados_por_fuente_2010$TRABAJO2010)^(1/2))-1)*100,
+                             "Capital"=(((upper_estados_por_fuente_2012$RENTAS2012/upper_estados_por_fuente_2010$RENTAS2010)^(1/2))-1)*100,
+                             "Social programs"=(((upper_estados_por_fuente_2012$BENEGOBIERNO2012/upper_estados_por_fuente_2010$BENEGOBIERNO2010)^(1/2))-1)*100,
+                             "Other transfers"=(((upper_estados_por_fuente_2012$TRANSFERENCES2012/upper_estados_por_fuente_2010$TRANSFERENCES2010)^(1/2))-1)*100,
+                             "Imputed rent and other income"=(((upper_estados_por_fuente_2012$OTHERS2012/upper_estados_por_fuente_2010$OTHERS2010)^(1/2))-1)*100)
+
+cuadro_consumo_2010_2012<-data.frame("consumption"=(((upper_consumo_por_estado_2012$c_Consumo_/upper_consumo_por_estado_2010)^(1/2))-1)*100)
+
+cuadro_2010_2012<-cbind(cuadro_2010_2012,cuadro_consumo_2010_2012)
+
+names(cuadro_2010_2012)<-c("Total","Labor","Capital","Social programs","Other transfers","Imputed rent and other income","Consumption")
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/GICS_BIENALES/GICS_BIENALES/"))
+
+write.dbf(cuadro_2010_2012,c("cuadro20102012 upper.dbf"))
+
+write_xlsx(cuadro_2010_2012,"cuadro20102012 upper.xlsx")
+
+rm(list=ls())
 
 
 
