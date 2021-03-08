@@ -720,7 +720,7 @@ for the bottom 40% households of the distribution
   theme_nothing(legend = TRUE)
 Bottom_income  
 
-ggsave(Bottom_income,width = 8, height = 5, units = c("cm"), device = "png",filename = "bottom_income_2010_2012.png")
+ggsave(Bottom_income,width = 15, height = 10, units = c("cm"), device = "png",filename = "bottom_income_2010_2012.png")
 
 PPI_income<-ggplot(data =  datos_para_mapa, aes(long, lat, group=group,fill=`PPGI.income`)) + 
   geom_polygon(colour="grey") +
@@ -733,7 +733,7 @@ Pro-Poor Index for income by state
   theme_nothing(legend = TRUE)
 PPI_income  
 
-ggsave(PPI_income,width = 8, height = 5, units = c("cm"), device = "png",filename = "PPI_income_2010_2012.png")
+ggsave(PPI_income,width = 15, height = 10, units = c("cm"), device = "png",filename = "PPI_income_2010_2012.png")
 
 Bottom_consumption<-ggplot(data =  datos_para_mapa, aes(long, lat, group=group,fill=`Bottom.40.consumption`)) + 
   geom_polygon(colour="grey") +
@@ -747,7 +747,7 @@ for the bottom 40% households of the distribution
   theme_nothing(legend = TRUE)
 Bottom_consumption  
 
-ggsave(Bottom_consumption,width = 8, height = 5, units = c("cm"), device = "png",filename = "bottom_consumption_2010_2012.png")
+ggsave(Bottom_consumption,width = 15, height = 10, units = c("cm"), device = "png",filename = "bottom_consumption_2010_2012.png")
 
 PPI_consumption<-ggplot(data =  datos_para_mapa, aes(long, lat, group=group,fill=`PPGI.consumption`)) + 
   geom_polygon(colour="grey") +
@@ -760,7 +760,7 @@ Pro-Poor Index for consumption by state
   theme_nothing(legend = TRUE)
 PPI_consumption 
 
-ggsave(PPI_consumption,width = 8, height = 5, units = c("cm"), device = "png",filename = "PPI_consumption_2010_2012.png")
+ggsave(PPI_consumption,width = 15, height = 10, units = c("cm"), device = "png",filename = "PPI_consumption_2010_2012.png")
 
 rm(list = ls())
 
