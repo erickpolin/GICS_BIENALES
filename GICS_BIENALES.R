@@ -676,6 +676,95 @@ rm(list=ls())
 
 
 
+######### mapas 2010-2012 ##########
+library(gpclib)
+library(sp)
+library(ggplot2)
+library(plyr)
+library(dplyr)
+library(scales)
+library(foreign)
+library(maptools)
+library(rgdal)
+library(ggmap)
+library(gridExtra)
+library(rgeos)
+library(mapdata)
+library(Hmisc)
+library(grid)
+library(mapproj)
+
+gpclibPermit()
+
+setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/GICS_BIENALES/GICS_BIENALES/"))
+
+mapa<-readOGR("mexstates.shp")
+
+mapa_frame<-fortify(mapa,region ="FIPS_ADMIN")
+
+####### ingreso bottom 40
+
+data<-read.csv("datos para mapas 2010-2012.csv")
+
+datos_para_mapa<-inner_join(mapa_frame,data, by = "id")
+
+Bottom_income<-ggplot(data =  datos_para_mapa, aes(long, lat, group=group,fill=`Bottom.40.income`)) + 
+  geom_polygon(colour="grey") +
+  coord_map(projection="mercator") +
+  labs(title = "Map 1
+Annual growth rate of total income per capita 
+for the bottom 40% households of the distribution
+2010 - 2012",fill="",caption= "Own elaboration based on NISG, 2021")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_fill_gradient2(low = "#A80000",mid = "white", high = "#176700", midpoint = 0)+
+  theme_nothing(legend = TRUE)
+Bottom_income  
+
+ggsave(Bottom_income,width = 8, height = 5, units = c("cm"), device = "png",filename = "bottom_income_2010_2012.png")
+
+PPI_income<-ggplot(data =  datos_para_mapa, aes(long, lat, group=group,fill=`PPGI.income`)) + 
+  geom_polygon(colour="grey") +
+  coord_map(projection="mercator") +
+  labs(title = "Map 2
+Pro-Poor Index for income by state
+2010 - 2012",fill="",caption= "Own elaboration based on NISG, 2021")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_fill_gradient2(low = "#A80000",mid = "white", high = "#176700", midpoint = 0)+
+  theme_nothing(legend = TRUE)
+PPI_income  
+
+ggsave(PPI_income,width = 8, height = 5, units = c("cm"), device = "png",filename = "PPI_income_2010_2012.png")
+
+Bottom_consumption<-ggplot(data =  datos_para_mapa, aes(long, lat, group=group,fill=`Bottom.40.consumption`)) + 
+  geom_polygon(colour="grey") +
+  coord_map(projection="mercator") +
+  labs(title = "Map 3
+Annual growth rate of consumption per capita 
+for the bottom 40% households of the distribution
+2010 - 2012",fill="",caption= "Own elaboration based on NISG, 2021")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_fill_gradient2(low = "#A80000",mid = "white", high = "#176700", midpoint = 0)+
+  theme_nothing(legend = TRUE)
+Bottom_consumption  
+
+ggsave(Bottom_consumption,width = 8, height = 5, units = c("cm"), device = "png",filename = "bottom_consumption_2010_2012.png")
+
+PPI_consumption<-ggplot(data =  datos_para_mapa, aes(long, lat, group=group,fill=`PPGI.consumption`)) + 
+  geom_polygon(colour="grey") +
+  coord_map(projection="mercator") +
+  labs(title = "Map 4
+Pro-Poor Index for consumption by state
+2010 - 2012",fill="",caption= "Own elaboration based on NISG, 2021")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_fill_gradient2(low = "#A80000",mid = "white", high = "#176700", midpoint = 0)+
+  theme_nothing(legend = TRUE)
+PPI_consumption 
+
+ggsave(PPI_consumption,width = 8, height = 5, units = c("cm"), device = "png",filename = "PPI_consumption_2010_2012.png")
+
+rm(list = ls())
+
+
 ######### 2012-2014 ##############
 Tasa_total<-((Deciles_por_fuente_2014$`ING COR2014`- Deciles_por_fuente_2012$`ING COR2012`)/Deciles_por_fuente_2012$`ING COR2012`)*100
 
