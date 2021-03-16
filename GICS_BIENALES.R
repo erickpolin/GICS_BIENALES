@@ -8,7 +8,7 @@ library(writexl)
 
 ########## 2010
 
-setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH 2010/ENIGH2010"))
+setwd(c("C:/Users/Sonia/Documents/Github/ENIGH2010"))
 Deciles_por_fuente_2010<-read.dbf("Nacional por fuente por DECIL estimaciones 2010.dbf")
 
 names(Deciles_por_fuente_2010)=c("ING COR2010", "TRABAJO2010", "SUBORDINADO2010", "NEGOCIOS2010","OTROS TRAB2010", "RENTAS2010","UTILIDAD2010", "ARRENDA2010", "TRANSFER2010","JUBILACION2010", "BECAS2010", "DONATIVOS2010", "REMESAS2010", "BENEGOBIERNO2010", "TRANS HOG2010", "TRANS INST2010", "ESTIM ALQU2010", "OTROS INGRESOS2010")
@@ -73,7 +73,7 @@ names(consumo_2010)=c("Consumo_2010")
 
 ######### 2012
 
-setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2012/ENIGH2012"))
+setwd(c("C:/Users/Sonia/Documents/Github/ENIGH2012"))
 Deciles_por_fuente_2012<-read.dbf("Nacional por fuente por DECIL estimaciones 2012.dbf")
 
 names(Deciles_por_fuente_2012)=c("ING COR2012", "TRABAJO2012", "SUBORDINADO2012", "NEGOCIOS2012","OTROS TRAB2012", "RENTAS2012","UTILIDAD2012", "ARRENDA2012", "TRANSFER2012","JUBILACION2012", "BECAS2012", "DONATIVOS2012", "REMESAS2012", "BENEGOBIERNO2012", "TRANS HOG2012", "TRANS INST2012", "ESTIM ALQU2012", "OTROS INGRESOS2012")
@@ -234,7 +234,62 @@ all.equal(Deciles_por_fuente_2018$`ING COR2018`,Deciles_por_fuente_2018$prueba2)
 
 
 ######### 2010-2012 por decil ##############
-Tasa_total<-(((Deciles_por_fuente_2012$`ING COR2012`/Deciles_por_fuente_2010$`ING COR2010`)^(1/2))-1)*100
+
+Tasa_total<-(Deciles_por_fuente_2012$`ING COR2012`-Deciles_por_fuente_2010$`ING COR2010`)/Deciles_por_fuente_2010$`ING COR2010`
+
+
+###### trabajo
+tasa_trabajo<-(Deciles_por_fuente_2012$TRABAJO2012-Deciles_por_fuente_2010$TRABAJO2010)/Deciles_por_fuente_2010$TRABAJO2010
+
+trabajo_3a<-tasa_trabajo*Deciles_por_fuente_2010$TRABAJO2010
+  
+trabajo_4<-tasa_trabajo*(Deciles_por_fuente_2010$TRABAJO2010/Deciles_por_fuente_2010$`ING COR2010`)  
+
+trabajo_5<-(tasa_trabajo/Tasa_total)*(Deciles_por_fuente_2010$TRABAJO2010/Deciles_por_fuente_2010$`ING COR2010`)
+
+###### capital
+tasa_renta<-(Deciles_por_fuente_2012$RENTAS2012-Deciles_por_fuente_2010$RENTAS2010)/Deciles_por_fuente_2010$RENTAS2010
+
+renta_3a<-tasa_renta*Deciles_por_fuente_2010$RENTAS2010
+
+renta_4<-tasa_renta*(Deciles_por_fuente_2010$RENTAS2010/Deciles_por_fuente_2010$`ING COR2010`)  
+
+renta_5<-(tasa_renta/Tasa_total)*(Deciles_por_fuente_2010$RENTAS2010/Deciles_por_fuente_2010$`ING COR2010`)
+
+####### programas sociales
+
+tasa_programas<-(Deciles_por_fuente_2012$BENEGOBIERNO2012-Deciles_por_fuente_2010$BENEGOBIERNO2010)/Deciles_por_fuente_2010$BENEGOBIERNO2010
+
+programas_3a<-tasa_programas*Deciles_por_fuente_2010$BENEGOBIERNO2010
+
+programas_4<-tasa_programas*(Deciles_por_fuente_2010$BENEGOBIERNO2010/Deciles_por_fuente_2010$`ING COR2010`)  
+
+programas_5<-(tasa_programas/Tasa_total)*(Deciles_por_fuente_2010$BENEGOBIERNO2010/Deciles_por_fuente_2010$`ING COR2010`)
+
+##### transfe
+
+tasa_transfe<-(Deciles_por_fuente_2012$TRANSFERENCES2012-Deciles_por_fuente_2010$TRANSFERENCES2010)/Deciles_por_fuente_2010$TRANSFERENCES2010
+
+transfe_3a<-tasa_transfe*Deciles_por_fuente_2010$TRANSFERENCES2010
+
+transfe_4<-tasa_transfe*(Deciles_por_fuente_2010$TRANSFERENCES2010/Deciles_por_fuente_2010$`ING COR2010`)  
+
+transfe_5<-(tasa_transfe/Tasa_total)*(Deciles_por_fuente_2010$TRANSFERENCES2010/Deciles_por_fuente_2010$`ING COR2010`)
+
+####### otros
+
+tasa_otros<-(Deciles_por_fuente_2012$OTHERS2012-Deciles_por_fuente_2010$OTHERS2010)/Deciles_por_fuente_2010$OTHERS2010
+
+otros_3a<-tasa_otros*Deciles_por_fuente_2010$OTHERS2010
+
+otros_4<-tasa_otros*(Deciles_por_fuente_2010$OTHERS2010/Deciles_por_fuente_2010$`ING COR2010`)  
+
+otros_5<-(tasa_otros/Tasa_total)*(Deciles_por_fuente_2010$OTHERS2010/Deciles_por_fuente_2010$`ING COR2010`)
+
+prueba<-trabajo_5+renta_5+programas_5+transfe_5+otros_5
+
+prueba
+
 
 ######################## Trabajo 
 
@@ -245,7 +300,7 @@ trabajo<-data.frame(trabajo2010=Deciles_por_fuente_2010$TRABAJO2010,
                     Tasa_total)
 
 trabajo<-trabajo%>%
-  mutate(trabajo_aporte=((trabajo2012-trabajo2010)/((ing_cor2012-ing_cor2010)))*Tasa_total)
+  mutate(trabajo_aporte=((((trabajo2012/trabajo2010)^(1/2))-1)*100))
 
 ################################### Rentas 
 rentas<-data.frame(rentas2010=Deciles_por_fuente_2010$RENTAS2010,
