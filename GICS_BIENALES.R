@@ -134,7 +134,7 @@ names(consumo_2012)=c("Consumo_2012")
 
 ######### 2014
 
-setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2014/ENIGH_2014"))
+setwd(c("C:/Users/Sonia/Documents/Github/ENIGH_2014"))
 Deciles_por_fuente_2014<-read.dbf("Nacional por fuente por DECIL estimaciones 2014.dbf")
 
 consumo_2014<-read.dbf("Nacional Consumo  por DECIL 2014.dbf")
@@ -167,7 +167,7 @@ all.equal(Deciles_por_fuente_2014$`ING COR2014`,Deciles_por_fuente_2014$prueba2)
 
 ######## 2016
 
-setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH_2016/ENIGH_2016"))
+setwd(c("C:/Users/Sonia/Documents/Github/ENIGH_2016"))
 Deciles_por_fuente_2016<-read.dbf("Nacional por fuente por DECIL estimaciones 2016.dbf")
 
 
@@ -201,7 +201,7 @@ all.equal(Deciles_por_fuente_2016$`ING COR2016`,Deciles_por_fuente_2016$prueba2)
 
 ############ 2018
 
-setwd(c("C:/Users/Erick/OneDrive/GIC/GITHUB2018/GIC/ENIGH 2018/ENIGH2018"))
+setwd(c("C:/Users/Sonia/Documents/Github/ENIGH2018"))
 Deciles_por_fuente_2018<-read.dbf("Nacional por fuente por DECIL estimaciones 2018.dbf")
 
 consumo_2018<-read.dbf("Nacional Consumo  por DECIL 2018.dbf")
@@ -247,6 +247,8 @@ trabajo_4<-tasa_trabajo*(Deciles_por_fuente_2010$TRABAJO2010/Deciles_por_fuente_
 
 trabajo_5<-(tasa_trabajo/Tasa_total)*(Deciles_por_fuente_2010$TRABAJO2010/Deciles_por_fuente_2010$`ING COR2010`)
 
+trabajo_6<-trabajo_5*Tasa_total
+
 ###### capital
 tasa_renta<-(Deciles_por_fuente_2012$RENTAS2012-Deciles_por_fuente_2010$RENTAS2010)/Deciles_por_fuente_2010$RENTAS2010
 
@@ -255,6 +257,8 @@ renta_3a<-tasa_renta*Deciles_por_fuente_2010$RENTAS2010
 renta_4<-tasa_renta*(Deciles_por_fuente_2010$RENTAS2010/Deciles_por_fuente_2010$`ING COR2010`)  
 
 renta_5<-(tasa_renta/Tasa_total)*(Deciles_por_fuente_2010$RENTAS2010/Deciles_por_fuente_2010$`ING COR2010`)
+
+renta_6<-renta_5*Tasa_total
 
 ####### programas sociales
 
@@ -266,6 +270,8 @@ programas_4<-tasa_programas*(Deciles_por_fuente_2010$BENEGOBIERNO2010/Deciles_po
 
 programas_5<-(tasa_programas/Tasa_total)*(Deciles_por_fuente_2010$BENEGOBIERNO2010/Deciles_por_fuente_2010$`ING COR2010`)
 
+programas_6<-programas_5*Tasa_total
+
 ##### transfe
 
 tasa_transfe<-(Deciles_por_fuente_2012$TRANSFERENCES2012-Deciles_por_fuente_2010$TRANSFERENCES2010)/Deciles_por_fuente_2010$TRANSFERENCES2010
@@ -275,6 +281,8 @@ transfe_3a<-tasa_transfe*Deciles_por_fuente_2010$TRANSFERENCES2010
 transfe_4<-tasa_transfe*(Deciles_por_fuente_2010$TRANSFERENCES2010/Deciles_por_fuente_2010$`ING COR2010`)  
 
 transfe_5<-(tasa_transfe/Tasa_total)*(Deciles_por_fuente_2010$TRANSFERENCES2010/Deciles_por_fuente_2010$`ING COR2010`)
+
+transfe_6<-transfe_5*Tasa_total
 
 ####### otros
 
@@ -286,79 +294,13 @@ otros_4<-tasa_otros*(Deciles_por_fuente_2010$OTHERS2010/Deciles_por_fuente_2010$
 
 otros_5<-(tasa_otros/Tasa_total)*(Deciles_por_fuente_2010$OTHERS2010/Deciles_por_fuente_2010$`ING COR2010`)
 
-prueba<-trabajo_5+renta_5+programas_5+transfe_5+otros_5
+otros_6<-otros_5*Tasa_total
 
-prueba
+prueba<-trabajo_6+renta_6+programas_6+transfe_6+otros_6
 
+all.equal(Tasa_total,prueba)
 
-######################## Trabajo 
-
-trabajo<-data.frame(trabajo2010=Deciles_por_fuente_2010$TRABAJO2010,
-                    trabajo2012=Deciles_por_fuente_2012$TRABAJO2012,
-                    ing_cor2010=Deciles_por_fuente_2010$`ING COR2010`,
-                    ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                    Tasa_total)
-
-trabajo<-trabajo%>%
-  mutate(trabajo_aporte=((((trabajo2012/trabajo2010)^(1/2))-1)*100))
-
-################################### Rentas 
-rentas<-data.frame(rentas2010=Deciles_por_fuente_2010$RENTAS2010,
-                   rentas2012=Deciles_por_fuente_2012$RENTAS2012,
-                   ing_cor2010=Deciles_por_fuente_2010$`ING COR2010`,
-                   ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                   Tasa_total)
-rentas<-rentas%>%
-  mutate(rentas_aporte=((rentas2012-rentas2010)/((ing_cor2012-ing_cor2010)))*Tasa_total)
-
-################################### TRANSFERENCES 
-
-TRANSFERENCES<-data.frame(TRANSFERENCES2010=Deciles_por_fuente_2010$TRANSFERENCES2010,
-                          TRANSFERENCES2012=Deciles_por_fuente_2012$TRANSFERENCES2012,
-                          ing_cor2010=Deciles_por_fuente_2010$`ING COR2010`,
-                          ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                          Tasa_total)
-TRANSFERENCES<-TRANSFERENCES%>%
-  mutate(TRANSFERENCES_aporte=((TRANSFERENCES2012-TRANSFERENCES2010)/((ing_cor2012-ing_cor2010)))*Tasa_total)
-
-
-################################### Benegobierno 
-
-benegobierno<-data.frame(benegob2010=Deciles_por_fuente_2010$BENEGOBIERNO2010,
-                         benegob2012=Deciles_por_fuente_2012$BENEGOBIERNO2012,
-                         ing_cor2010=Deciles_por_fuente_2010$`ING COR2010`,
-                         ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                         Tasa_total)
-
-benegobierno<-benegobierno%>%
-  mutate(benegob_aporte=((benegob2012-benegob2010)/((ing_cor2012-ing_cor2010)))*Tasa_total)
-
-################################### OTHERS
-
-OTHERS<-data.frame(OTHERS2010=Deciles_por_fuente_2010$OTHERS2010, 
-                   OTHERS2012=Deciles_por_fuente_2012$OTHERS2012,
-                   ing_cor2010=Deciles_por_fuente_2010$`ING COR2010`,
-                   ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                   Tasa_total)
-
-OTHERS<-OTHERS%>%
-  mutate(OTHERS_aporte=((OTHERS2012-OTHERS2010)/((ing_cor2012-ing_cor2010)))*Tasa_total)
-
-
-################################### Cuadro final 
-
-cuadro_final<-data.frame(
-  Labor=trabajo$trabajo_aporte,
-  Capital=rentas$rentas_aporte,
-  "Social programs"=benegobierno$benegob_aporte,
-  "Other transfers"=TRANSFERENCES$TRANSFERENCES_aporte,
-  "Imputed rent and other income"=OTHERS$OTHERS_aporte)
-
-prueba<-cuadro_final%>%
-  mutate(Prueba=Labor+Capital+Social.programs+Other.transfers+Imputed.rent.and.other.income)
-
-all.equal(Tasa_total,prueba$Prueba)
-
+cuadro_final<-data.frame(trabajo_6,renta_6,programas_6,transfe_6,otros_6)
 
 
 names(cuadro_final)<-c("Labor","Capital","Social programs","Other transfers","Imputed rent 
@@ -377,9 +319,9 @@ cuadro_final<-melt(cuadro_final)
 labels<-cuadro_final%>%
   mutate(labels=ifelse(value>0,value,0))%>%
   group_by(Deciles)%>%
-  summarize(sum(labels)+1.5)
+  summarize(sum(labels)+0.02)
 
-labels<-labels$`sum(labels) + 1.5`
+labels<-labels$`sum(labels) + 0.02`
 
 max<-cuadro_final%>%
   group_by(Deciles)%>%
@@ -408,7 +350,6 @@ Growth Incidence Curve by income source
        fill="Source of
   income")+
   geom_hline(yintercept = 0)+
-  scale_y_continuous(breaks = seq(min,max,1),labels = rep(c(""),abs(min-max)+1))+
   annotate("text", x= "Mean", y= labels[1], label=round(Tasa_total[1],2))+
   annotate("text", x= "I", y= labels[2], label=round(Tasa_total[2],2))+
   annotate("text", x= "II", y= labels[3], label=round(Tasa_total[3],2))+
@@ -423,6 +364,8 @@ Growth Incidence Curve by income source
   theme_minimal()
 
 GIC
+
+
 
 ######## Consumo 
 
@@ -468,6 +411,8 @@ Growth Incidence Curve by consumption
 
 
 GIC_cons 
+
+
 
 ######### 2010-2012  por estados media ##############
 
@@ -821,76 +766,72 @@ rm(list = ls())
 
 
 ######### 2012-2014 ##############
-Tasa_total<-((Deciles_por_fuente_2014$`ING COR2014`- Deciles_por_fuente_2012$`ING COR2012`)/Deciles_por_fuente_2012$`ING COR2012`)*100
-
-######################## Trabajo 
-
-trabajo<-data.frame(trabajo2012=Deciles_por_fuente_2012$TRABAJO2012,
-                    trabajo2014=Deciles_por_fuente_2014$TRABAJO2014,
-                    ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                    ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                    Tasa_total)
-
-trabajo<-trabajo%>%
-  mutate(trabajo_aporte=((trabajo2014-trabajo2012)/((ing_cor2014-ing_cor2012)))*Tasa_total)
-
-################################### Rentas 
-rentas<-data.frame(rentas2012=Deciles_por_fuente_2012$RENTAS2012,
-                   rentas2014=Deciles_por_fuente_2014$RENTAS2014,
-                   ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                   ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                   Tasa_total)
-rentas<-rentas%>%
-  mutate(rentas_aporte=((rentas2014-rentas2012)/((ing_cor2014-ing_cor2012)))*Tasa_total)
-
-################################### TRANSFERENCES 
-
-TRANSFERENCES<-data.frame(TRANSFERENCES2012=Deciles_por_fuente_2012$TRANSFERENCES2012,
-                          TRANSFERENCES2014=Deciles_por_fuente_2014$TRANSFERENCES2014,
-                          ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                          ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                          Tasa_total)
-TRANSFERENCES<-TRANSFERENCES%>%
-  mutate(TRANSFERENCES_aporte=((TRANSFERENCES2014-TRANSFERENCES2012)/((ing_cor2014-ing_cor2012)))*Tasa_total)
+Tasa_total<-(Deciles_por_fuente_2014$`ING COR2014`-Deciles_por_fuente_2012$`ING COR2012`)/Deciles_por_fuente_2012$`ING COR2012`
 
 
-################################### Benegobierno 
+###### trabajo
+tasa_trabajo<-(Deciles_por_fuente_2014$TRABAJO2014-Deciles_por_fuente_2012$TRABAJO2012)/Deciles_por_fuente_2012$TRABAJO2012
 
-benegobierno<-data.frame(benegob2012=Deciles_por_fuente_2012$BENEGOBIERNO2012,
-                         benegob2014=Deciles_por_fuente_2014$BENEGOBIERNO2014,
-                         ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                         ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                         Tasa_total)
+trabajo_3a<-tasa_trabajo*Deciles_por_fuente_2012$TRABAJO2012
 
-benegobierno<-benegobierno%>%
-  mutate(benegob_aporte=((benegob2014-benegob2012)/((ing_cor2014-ing_cor2012)))*Tasa_total)
+trabajo_4<-tasa_trabajo*(Deciles_por_fuente_2012$TRABAJO2012/Deciles_por_fuente_2012$`ING COR2012`)  
 
-################################### OTHERS
+trabajo_5<-(tasa_trabajo/Tasa_total)*(Deciles_por_fuente_2012$TRABAJO2012/Deciles_por_fuente_2012$`ING COR2012`)
 
-OTHERS<-data.frame(OTHERS2012=Deciles_por_fuente_2012$OTHERS2012, 
-                   OTHERS2014=Deciles_por_fuente_2014$OTHERS2014,
-                   ing_cor2012=Deciles_por_fuente_2012$`ING COR2012`,
-                   ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                   Tasa_total)
+trabajo_6<-trabajo_5*Tasa_total
 
-OTHERS<-OTHERS%>%
-  mutate(OTHERS_aporte=((OTHERS2014-OTHERS2012)/((ing_cor2014-ing_cor2012)))*Tasa_total)
+###### capital
+tasa_renta<-(Deciles_por_fuente_2014$RENTAS2014-Deciles_por_fuente_2012$RENTAS2012)/Deciles_por_fuente_2012$RENTAS2012
 
+renta_3a<-tasa_renta*Deciles_por_fuente_2012$RENTAS2012
 
-################################### Cuadro final 
+renta_4<-tasa_renta*(Deciles_por_fuente_2012$RENTAS2012/Deciles_por_fuente_2012$`ING COR2012`)  
 
-cuadro_final<-data.frame(
-  Labor=trabajo$trabajo_aporte,
-  Capital=rentas$rentas_aporte,
-  "Social programs"=benegobierno$benegob_aporte,
-  "Other transfers"=TRANSFERENCES$TRANSFERENCES_aporte,
-  "Imputed rent and other income"=OTHERS$OTHERS_aporte)
+renta_5<-(tasa_renta/Tasa_total)*(Deciles_por_fuente_2012$RENTAS2012/Deciles_por_fuente_2012$`ING COR2012`)
 
-prueba<-cuadro_final%>%
-  mutate(Prueba=Labor+Capital+Social.programs+Other.transfers+Imputed.rent.and.other.income)
+renta_6<-renta_5*Tasa_total
 
-all.equal(Tasa_total,prueba$Prueba)
+####### programas sociales
 
+tasa_programas<-(Deciles_por_fuente_2014$BENEGOBIERNO2014-Deciles_por_fuente_2012$BENEGOBIERNO2012)/Deciles_por_fuente_2012$BENEGOBIERNO2012
+
+programas_3a<-tasa_programas*Deciles_por_fuente_2012$BENEGOBIERNO2012
+
+programas_4<-tasa_programas*(Deciles_por_fuente_2012$BENEGOBIERNO2012/Deciles_por_fuente_2012$`ING COR2012`)  
+
+programas_5<-(tasa_programas/Tasa_total)*(Deciles_por_fuente_2012$BENEGOBIERNO2012/Deciles_por_fuente_2012$`ING COR2012`)
+
+programas_6<-programas_5*Tasa_total
+
+##### transfe
+
+tasa_transfe<-(Deciles_por_fuente_2014$TRANSFERENCES2014-Deciles_por_fuente_2012$TRANSFERENCES2012)/Deciles_por_fuente_2012$TRANSFERENCES2012
+
+transfe_3a<-tasa_transfe*Deciles_por_fuente_2012$TRANSFERENCES2012
+
+transfe_4<-tasa_transfe*(Deciles_por_fuente_2012$TRANSFERENCES2012/Deciles_por_fuente_2012$`ING COR2012`)  
+
+transfe_5<-(tasa_transfe/Tasa_total)*(Deciles_por_fuente_2012$TRANSFERENCES2012/Deciles_por_fuente_2012$`ING COR2012`)
+
+transfe_6<-transfe_5*Tasa_total
+
+####### otros
+
+tasa_otros<-(Deciles_por_fuente_2014$OTHERS2014-Deciles_por_fuente_2012$OTHERS2012)/Deciles_por_fuente_2012$OTHERS2012
+
+otros_3a<-tasa_otros*Deciles_por_fuente_2012$OTHERS2012
+
+otros_4<-tasa_otros*(Deciles_por_fuente_2012$OTHERS2012/Deciles_por_fuente_2012$`ING COR2012`)  
+
+otros_5<-(tasa_otros/Tasa_total)*(Deciles_por_fuente_2012$OTHERS2012/Deciles_por_fuente_2012$`ING COR2012`)
+
+otros_6<-otros_5*Tasa_total
+
+prueba<-trabajo_6+renta_6+programas_6+transfe_6+otros_6
+
+all.equal(Tasa_total,prueba)
+
+cuadro_final<-data.frame(trabajo_6,renta_6,programas_6,transfe_6,otros_6)
 
 
 names(cuadro_final)<-c("Labor","Capital","Social programs","Other transfers","Imputed rent 
@@ -909,9 +850,9 @@ cuadro_final<-melt(cuadro_final)
 labels<-cuadro_final%>%
   mutate(labels=ifelse(value>0,value,0))%>%
   group_by(Deciles)%>%
-  summarize(sum(labels)+1.5)
+  summarize(sum(labels)+0.02)
 
-labels<-labels$`sum(labels) + 1.5`
+labels<-labels$`sum(labels) + 0.02`
 
 max<-cuadro_final%>%
   group_by(Deciles)%>%
@@ -927,20 +868,19 @@ min<-cuadro_final%>%
 
 min<-round(min(min$`sum(value)`)-2)
 
-GIC<-cuadro_final%>%
+GIC_2012_2014<-cuadro_final%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(x=Deciles, y=value , fill= variable),position= "dodge")+
   geom_col()+
-  labs(title = "Figure 3
+  labs(title = "Figure 4
 Mexico
-Growth Incidence Curve by income
+Growth Incidence Curve by income source
 2012-2014",
        y="Growth rate (total)",
        x="Decile",
        fill="Source of
   income")+
   geom_hline(yintercept = 0)+
-  scale_y_continuous(breaks = seq(min,max,1),labels = rep(c(""),abs(min-max)+1))+
   annotate("text", x= "Mean", y= labels[1], label=round(Tasa_total[1],2))+
   annotate("text", x= "I", y= labels[2], label=round(Tasa_total[2],2))+
   annotate("text", x= "II", y= labels[3], label=round(Tasa_total[3],2))+
@@ -954,7 +894,8 @@ Growth Incidence Curve by income
   annotate("text", x= "X", y= labels[11], label=round(Tasa_total[11],2))+
   theme_minimal()
 
-GIC
+GIC_2012_2014
+
 
 ######## Consumo 
 
@@ -992,76 +933,72 @@ GIC_cons
 
 
 ######### 2014-2016 ##############
-Tasa_total<-((Deciles_por_fuente_2016$`ING COR2016`- Deciles_por_fuente_2014$`ING COR2014`)/Deciles_por_fuente_2014$`ING COR2014`)*100
-
-######################## Trabajo 
-
-trabajo<-data.frame(trabajo2014=Deciles_por_fuente_2014$TRABAJO2014,
-                    trabajo2016=Deciles_por_fuente_2016$TRABAJO2016,
-                    ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                    ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                    Tasa_total)
-
-trabajo<-trabajo%>%
-  mutate(trabajo_aporte=((trabajo2016-trabajo2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
-
-################################### Rentas 
-rentas<-data.frame(rentas2014=Deciles_por_fuente_2014$RENTAS2014,
-                   rentas2016=Deciles_por_fuente_2016$RENTAS2016,
-                   ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                   ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                   Tasa_total)
-rentas<-rentas%>%
-  mutate(rentas_aporte=((rentas2016-rentas2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
-
-################################### TRANSFERENCES 
-
-TRANSFERENCES<-data.frame(TRANSFERENCES2014=Deciles_por_fuente_2014$TRANSFERENCES2014,
-                          TRANSFERENCES2016=Deciles_por_fuente_2016$TRANSFERENCES2016,
-                          ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                          ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                          Tasa_total)
-TRANSFERENCES<-TRANSFERENCES%>%
-  mutate(TRANSFERENCES_aporte=((TRANSFERENCES2016-TRANSFERENCES2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
+Tasa_total<-(Deciles_por_fuente_2016$`ING COR2016`-Deciles_por_fuente_2014$`ING COR2014`)/Deciles_por_fuente_2014$`ING COR2014`
 
 
-################################### Benegobierno 
+###### trabajo
+tasa_trabajo<-(Deciles_por_fuente_2016$TRABAJO2016-Deciles_por_fuente_2014$TRABAJO2014)/Deciles_por_fuente_2014$TRABAJO2014
 
-benegobierno<-data.frame(benegob2014=Deciles_por_fuente_2014$BENEGOBIERNO2014,
-                         benegob2016=Deciles_por_fuente_2016$BENEGOBIERNO2016,
-                         ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                         ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                         Tasa_total)
+trabajo_3a<-tasa_trabajo*Deciles_por_fuente_2014$TRABAJO2014
 
-benegobierno<-benegobierno%>%
-  mutate(benegob_aporte=((benegob2016-benegob2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
+trabajo_4<-tasa_trabajo*(Deciles_por_fuente_2014$TRABAJO2014/Deciles_por_fuente_2014$`ING COR2014`)  
 
-################################### OTHERS
+trabajo_5<-(tasa_trabajo/Tasa_total)*(Deciles_por_fuente_2014$TRABAJO2014/Deciles_por_fuente_2014$`ING COR2014`)
 
-OTHERS<-data.frame(OTHERS2014=Deciles_por_fuente_2014$OTHERS2014, 
-                   OTHERS2016=Deciles_por_fuente_2016$OTHERS2016,
-                   ing_cor2014=Deciles_por_fuente_2014$`ING COR2014`,
-                   ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                   Tasa_total)
+trabajo_6<-trabajo_5*Tasa_total
 
-OTHERS<-OTHERS%>%
-  mutate(OTHERS_aporte=((OTHERS2016-OTHERS2014)/((ing_cor2016-ing_cor2014)))*Tasa_total)
+###### capital
+tasa_renta<-(Deciles_por_fuente_2016$RENTAS2016-Deciles_por_fuente_2014$RENTAS2014)/Deciles_por_fuente_2014$RENTAS2014
 
+renta_3a<-tasa_renta*Deciles_por_fuente_2014$RENTAS2014
 
-################################### Cuadro final 
+renta_4<-tasa_renta*(Deciles_por_fuente_2014$RENTAS2014/Deciles_por_fuente_2014$`ING COR2014`)  
 
-cuadro_final<-data.frame(
-  Labor=trabajo$trabajo_aporte,
-  Capital=rentas$rentas_aporte,
-  "Social programs"=benegobierno$benegob_aporte,
-  "Other transfers"=TRANSFERENCES$TRANSFERENCES_aporte,
-  "Imputed rent and other income"=OTHERS$OTHERS_aporte)
+renta_5<-(tasa_renta/Tasa_total)*(Deciles_por_fuente_2014$RENTAS2014/Deciles_por_fuente_2014$`ING COR2014`)
 
-prueba<-cuadro_final%>%
-  mutate(Prueba=Labor+Capital+Social.programs+Other.transfers+Imputed.rent.and.other.income)
+renta_6<-renta_5*Tasa_total
 
-all.equal(Tasa_total,prueba$Prueba)
+####### programas sociales
 
+tasa_programas<-(Deciles_por_fuente_2016$BENEGOBIERNO2016-Deciles_por_fuente_2014$BENEGOBIERNO2014)/Deciles_por_fuente_2014$BENEGOBIERNO2014
+
+programas_3a<-tasa_programas*Deciles_por_fuente_2014$BENEGOBIERNO2014
+
+programas_4<-tasa_programas*(Deciles_por_fuente_2014$BENEGOBIERNO2014/Deciles_por_fuente_2014$`ING COR2014`)  
+
+programas_5<-(tasa_programas/Tasa_total)*(Deciles_por_fuente_2014$BENEGOBIERNO2014/Deciles_por_fuente_2014$`ING COR2014`)
+
+programas_6<-programas_5*Tasa_total
+
+##### transfe
+
+tasa_transfe<-(Deciles_por_fuente_2016$TRANSFERENCES2016-Deciles_por_fuente_2014$TRANSFERENCES2014)/Deciles_por_fuente_2014$TRANSFERENCES2014
+
+transfe_3a<-tasa_transfe*Deciles_por_fuente_2014$TRANSFERENCES2014
+
+transfe_4<-tasa_transfe*(Deciles_por_fuente_2014$TRANSFERENCES2014/Deciles_por_fuente_2014$`ING COR2014`)  
+
+transfe_5<-(tasa_transfe/Tasa_total)*(Deciles_por_fuente_2014$TRANSFERENCES2014/Deciles_por_fuente_2014$`ING COR2014`)
+
+transfe_6<-transfe_5*Tasa_total
+
+####### otros
+
+tasa_otros<-(Deciles_por_fuente_2016$OTHERS2016-Deciles_por_fuente_2014$OTHERS2014)/Deciles_por_fuente_2014$OTHERS2014
+
+otros_3a<-tasa_otros*Deciles_por_fuente_2014$OTHERS2014
+
+otros_4<-tasa_otros*(Deciles_por_fuente_2014$OTHERS2014/Deciles_por_fuente_2014$`ING COR2014`)  
+
+otros_5<-(tasa_otros/Tasa_total)*(Deciles_por_fuente_2014$OTHERS2014/Deciles_por_fuente_2014$`ING COR2014`)
+
+otros_6<-otros_5*Tasa_total
+
+prueba<-trabajo_6+renta_6+programas_6+transfe_6+otros_6
+
+all.equal(Tasa_total,prueba)
+
+cuadro_final<-data.frame(trabajo_6,renta_6,programas_6,transfe_6,otros_6)
 
 
 names(cuadro_final)<-c("Labor","Capital","Social programs","Other transfers","Imputed rent 
@@ -1080,9 +1017,9 @@ cuadro_final<-melt(cuadro_final)
 labels<-cuadro_final%>%
   mutate(labels=ifelse(value>0,value,0))%>%
   group_by(Deciles)%>%
-  summarize(sum(labels)+1.5)
+  summarize(sum(labels)+0.02)
 
-labels<-labels$`sum(labels) + 1.5`
+labels<-labels$`sum(labels) + 0.02`
 
 max<-cuadro_final%>%
   group_by(Deciles)%>%
@@ -1098,20 +1035,19 @@ min<-cuadro_final%>%
 
 min<-round(min(min$`sum(value)`)-2)
 
-GIC<-cuadro_final%>%
+GIC_2014_2016<-cuadro_final%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(x=Deciles, y=value , fill= variable),position= "dodge")+
   geom_col()+
   labs(title = "Figure 5
 Mexico
-Growth Incidence Curve by income
+Growth Incidence Curve by income source
 2014-2016",
        y="Growth rate (total)",
        x="Decile",
        fill="Source of
   income")+
   geom_hline(yintercept = 0)+
-  scale_y_continuous(breaks = seq(min,max,1),labels = rep(c(""),abs(min-max)+1))+
   annotate("text", x= "Mean", y= labels[1], label=round(Tasa_total[1],2))+
   annotate("text", x= "I", y= labels[2], label=round(Tasa_total[2],2))+
   annotate("text", x= "II", y= labels[3], label=round(Tasa_total[3],2))+
@@ -1125,8 +1061,7 @@ Growth Incidence Curve by income
   annotate("text", x= "X", y= labels[11], label=round(Tasa_total[11],2))+
   theme_minimal()
 
-GIC
-
+GIC_2014_2016
 
 
 ######## Consumo 
@@ -1175,76 +1110,72 @@ Growth Incidence Curve by consumption
 GIC_cons
 
 ######### 2016-2018 ##############
-Tasa_total<-((Deciles_por_fuente_2018$`ING COR2018`- Deciles_por_fuente_2016$`ING COR2016`)/Deciles_por_fuente_2016$`ING COR2016`)*100
-
-######################## Trabajo 
-
-trabajo<-data.frame(trabajo2016=Deciles_por_fuente_2016$TRABAJO2016,
-                    trabajo2018=Deciles_por_fuente_2018$TRABAJO2018,
-                    ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                    ing_cor2018=Deciles_por_fuente_2018$`ING COR2018`,
-                    Tasa_total)
-
-trabajo<-trabajo%>%
-  mutate(trabajo_aporte=((trabajo2018-trabajo2016)/((ing_cor2018-ing_cor2016)))*Tasa_total)
-
-################################### Rentas 
-rentas<-data.frame(rentas2016=Deciles_por_fuente_2016$RENTAS2016,
-                   rentas2018=Deciles_por_fuente_2018$RENTAS2018,
-                   ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                   ing_cor2018=Deciles_por_fuente_2018$`ING COR2018`,
-                   Tasa_total)
-rentas<-rentas%>%
-  mutate(rentas_aporte=((rentas2018-rentas2016)/((ing_cor2018-ing_cor2016)))*Tasa_total)
-
-################################### TRANSFERENCES 
-
-TRANSFERENCES<-data.frame(TRANSFERENCES2016=Deciles_por_fuente_2016$TRANSFERENCES2016,
-                          TRANSFERENCES2018=Deciles_por_fuente_2018$TRANSFERENCES2018,
-                          ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                          ing_cor2018=Deciles_por_fuente_2018$`ING COR2018`,
-                          Tasa_total)
-TRANSFERENCES<-TRANSFERENCES%>%
-  mutate(TRANSFERENCES_aporte=((TRANSFERENCES2018-TRANSFERENCES2016)/((ing_cor2018-ing_cor2016)))*Tasa_total)
+Tasa_total<-(Deciles_por_fuente_2018$`ING COR2018`-Deciles_por_fuente_2016$`ING COR2016`)/Deciles_por_fuente_2016$`ING COR2016`
 
 
-################################### Benegobierno 
+###### trabajo
+tasa_trabajo<-(Deciles_por_fuente_2018$TRABAJO2018-Deciles_por_fuente_2016$TRABAJO2016)/Deciles_por_fuente_2016$TRABAJO2016
 
-benegobierno<-data.frame(benegob2016=Deciles_por_fuente_2016$BENEGOBIERNO2016,
-                         benegob2018=Deciles_por_fuente_2018$BENEGOBIERNO2018,
-                         ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                         ing_cor2018=Deciles_por_fuente_2018$`ING COR2018`,
-                         Tasa_total)
+trabajo_3a<-tasa_trabajo*Deciles_por_fuente_2016$TRABAJO2016
 
-benegobierno<-benegobierno%>%
-  mutate(benegob_aporte=((benegob2018-benegob2016)/((ing_cor2018-ing_cor2016)))*Tasa_total)
+trabajo_4<-tasa_trabajo*(Deciles_por_fuente_2016$TRABAJO2016/Deciles_por_fuente_2016$`ING COR2016`)  
 
-################################### OTHERS
+trabajo_5<-(tasa_trabajo/Tasa_total)*(Deciles_por_fuente_2016$TRABAJO2016/Deciles_por_fuente_2016$`ING COR2016`)
 
-OTHERS<-data.frame(OTHERS2016=Deciles_por_fuente_2016$OTHERS2016, 
-                   OTHERS2018=Deciles_por_fuente_2018$OTHERS2018,
-                   ing_cor2016=Deciles_por_fuente_2016$`ING COR2016`,
-                   ing_cor2018=Deciles_por_fuente_2018$`ING COR2018`,
-                   Tasa_total)
+trabajo_6<-trabajo_5*Tasa_total
 
-OTHERS<-OTHERS%>%
-  mutate(OTHERS_aporte=((OTHERS2018-OTHERS2016)/((ing_cor2018-ing_cor2016)))*Tasa_total)
+###### capital
+tasa_renta<-(Deciles_por_fuente_2018$RENTAS2018-Deciles_por_fuente_2016$RENTAS2016)/Deciles_por_fuente_2016$RENTAS2016
 
+renta_3a<-tasa_renta*Deciles_por_fuente_2016$RENTAS2016
 
-################################### Cuadro final 
+renta_4<-tasa_renta*(Deciles_por_fuente_2016$RENTAS2016/Deciles_por_fuente_2016$`ING COR2016`)  
 
-cuadro_final<-data.frame(
-  Labor=trabajo$trabajo_aporte,
-  Capital=rentas$rentas_aporte,
-  "Social programs"=benegobierno$benegob_aporte,
-  "Other transfers"=TRANSFERENCES$TRANSFERENCES_aporte,
-  "Imputed rent and other income"=OTHERS$OTHERS_aporte)
+renta_5<-(tasa_renta/Tasa_total)*(Deciles_por_fuente_2016$RENTAS2016/Deciles_por_fuente_2016$`ING COR2016`)
 
-prueba<-cuadro_final%>%
-  mutate(Prueba=Labor+Capital+Social.programs+Other.transfers+Imputed.rent.and.other.income)
+renta_6<-renta_5*Tasa_total
 
-all.equal(Tasa_total,prueba$Prueba)
+####### programas sociales
 
+tasa_programas<-(Deciles_por_fuente_2018$BENEGOBIERNO2018-Deciles_por_fuente_2016$BENEGOBIERNO2016)/Deciles_por_fuente_2016$BENEGOBIERNO2016
+
+programas_3a<-tasa_programas*Deciles_por_fuente_2016$BENEGOBIERNO2016
+
+programas_4<-tasa_programas*(Deciles_por_fuente_2016$BENEGOBIERNO2016/Deciles_por_fuente_2016$`ING COR2016`)  
+
+programas_5<-(tasa_programas/Tasa_total)*(Deciles_por_fuente_2016$BENEGOBIERNO2016/Deciles_por_fuente_2016$`ING COR2016`)
+
+programas_6<-programas_5*Tasa_total
+
+##### transfe
+
+tasa_transfe<-(Deciles_por_fuente_2018$TRANSFERENCES2018-Deciles_por_fuente_2016$TRANSFERENCES2016)/Deciles_por_fuente_2016$TRANSFERENCES2016
+
+transfe_3a<-tasa_transfe*Deciles_por_fuente_2016$TRANSFERENCES2016
+
+transfe_4<-tasa_transfe*(Deciles_por_fuente_2016$TRANSFERENCES2016/Deciles_por_fuente_2016$`ING COR2016`)  
+
+transfe_5<-(tasa_transfe/Tasa_total)*(Deciles_por_fuente_2016$TRANSFERENCES2016/Deciles_por_fuente_2016$`ING COR2016`)
+
+transfe_6<-transfe_5*Tasa_total
+
+####### otros
+
+tasa_otros<-(Deciles_por_fuente_2018$OTHERS2018-Deciles_por_fuente_2016$OTHERS2016)/Deciles_por_fuente_2016$OTHERS2016
+
+otros_3a<-tasa_otros*Deciles_por_fuente_2016$OTHERS2016
+
+otros_4<-tasa_otros*(Deciles_por_fuente_2016$OTHERS2016/Deciles_por_fuente_2016$`ING COR2016`)  
+
+otros_5<-(tasa_otros/Tasa_total)*(Deciles_por_fuente_2016$OTHERS2016/Deciles_por_fuente_2016$`ING COR2016`)
+
+otros_6<-otros_5*Tasa_total
+
+prueba<-trabajo_6+renta_6+programas_6+transfe_6+otros_6
+
+all.equal(Tasa_total,prueba)
+
+cuadro_final<-data.frame(trabajo_6,renta_6,programas_6,transfe_6,otros_6)
 
 
 names(cuadro_final)<-c("Labor","Capital","Social programs","Other transfers","Imputed rent 
@@ -1263,9 +1194,9 @@ cuadro_final<-melt(cuadro_final)
 labels<-cuadro_final%>%
   mutate(labels=ifelse(value>0,value,0))%>%
   group_by(Deciles)%>%
-  summarize(sum(labels)+1.5)
+  summarize(sum(labels)+0.02)
 
-labels<-labels$`sum(labels) + 1.5`
+labels<-labels$`sum(labels) + 0.02`
 
 max<-cuadro_final%>%
   group_by(Deciles)%>%
@@ -1281,20 +1212,19 @@ min<-cuadro_final%>%
 
 min<-round(min(min$`sum(value)`)-2)
 
-GIC<-cuadro_final%>%
+GIC_2016_2018<-cuadro_final%>%
   mutate(Deciles=fct_relevel(Deciles,"Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"))%>%
   ggplot(aes(x=Deciles, y=value , fill= variable),position= "dodge")+
   geom_col()+
-  labs(title = "Figure 7
+  labs(title = "Figure 6
 Mexico
-Growth Incidence Curve by income
+Growth Incidence Curve by income source
 2016-2018",
        y="Growth rate (total)",
        x="Decile",
        fill="Source of
   income")+
   geom_hline(yintercept = 0)+
-  scale_y_continuous(breaks = seq(min,max,1),labels = rep(c(""),abs(min-max)+1))+
   annotate("text", x= "Mean", y= labels[1], label=round(Tasa_total[1],2))+
   annotate("text", x= "I", y= labels[2], label=round(Tasa_total[2],2))+
   annotate("text", x= "II", y= labels[3], label=round(Tasa_total[3],2))+
@@ -1308,8 +1238,7 @@ Growth Incidence Curve by income
   annotate("text", x= "X", y= labels[11], label=round(Tasa_total[11],2))+
   theme_minimal()
 
-GIC
-
+GIC_2016_2018
 
 ######## Consumo 
 
