@@ -1469,7 +1469,7 @@ GIC_cons
 
 
 
-#proporciones de ingres
+######### proporciones de ingreso ######
 library(tidyverse)
 library(reshape2)
 base_2018<-data.frame(Decil=c("Mean","I","II","III","IV","V","VI","VII","VIII","IX","X"),
@@ -1536,9 +1536,10 @@ library(ggpubr)
 
 final<-ggarrange(grafica_2010,grafica_2018,ncol = 1, nrow = 2)
 
-annotate_figure(final,top = text_grob("Figure 2
+annotate_figure(final,top = text_grob("Figure 1
 Mexico
 Relative contribution by source of income to total household income",
                                       color = "black", face = "bold", size = 14))
+
 
 
