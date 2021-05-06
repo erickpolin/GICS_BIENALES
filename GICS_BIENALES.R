@@ -25,13 +25,39 @@ all.equal(Deciles_por_fuente_2010$`ING COR2010`,Deciles_por_fuente_2010$prueba)
 
 
 Deciles_por_fuente_2010<-Deciles_por_fuente_2010%>%
-  mutate("TRANSFERENCES2010"=JUBILACION2010+BECAS2010+DONATIVOS2010+REMESAS2010+`TRANS HOG2010`+`TRANS INST2010`,
+  mutate("pensions2010"=JUBILACION2010,
+         "remitances2010"=REMESAS2010,
+         "TRANSFERENCES2010"=BECAS2010+DONATIVOS2010+`TRANS HOG2010`+`TRANS INST2010`,
          "OTHERS2010"=`ESTIM ALQU2010`+`OTROS INGRESOS2010`)
 
 Deciles_por_fuente_2010<-Deciles_por_fuente_2010%>%
-  mutate(prueba2=TRABAJO2010+RENTAS2010+BENEGOBIERNO2010+TRANSFERENCES2010+OTHERS2010)
+  mutate(prueba2=TRABAJO2010+RENTAS2010+BENEGOBIERNO2010+pensions2010+remitances2010+TRANSFERENCES2010+OTHERS2010)
 
 all.equal(Deciles_por_fuente_2010$`ING COR2010`,Deciles_por_fuente_2010$prueba2)
+
+porcentajes<-Deciles_por_fuente_2010%>%
+  select(`ING COR2010`,TRABAJO2010,RENTAS2010,BENEGOBIERNO2010,pensions2010,remitances2010,TRANSFERENCES2010,OTHERS2010)
+
+porcentajes<-porcentajes%>%
+  mutate(`ING COR2010`=`ING COR2010`-porcentajes$OTHERS2010)
+
+porcentajes<-porcentajes%>%
+  mutate(prueba=TRABAJO2010+RENTAS2010+BENEGOBIERNO2010+pensions2010+remitances2010+TRANSFERENCES2010)
+
+all.equal(porcentajes$`ING COR2010`,porcentajes$prueba)
+
+porcentajes<-porcentajes%>%
+  mutate(TRABAJO2010=TRABAJO2010/`ING COR2010`,
+         RENTAS2010=RENTAS2010/`ING COR2010`,
+         BENEGOBIERNO2010=BENEGOBIERNO2010/`ING COR2010`,
+         pensions2010=pensions2010/`ING COR2010`,
+         remitances2010=remitances2010/`ING COR2010`,
+         TRANSFERENCES2010=TRANSFERENCES2010/`ING COR2010`)
+
+
+write_xlsx(porcentajes, "porcentajes.xlsx")
+
+
 
 #### bottom
 
